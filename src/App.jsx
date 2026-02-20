@@ -1683,7 +1683,7 @@ function AdminDashboard() {
             <Badge type="primary">ADMIN</Badge>
             <h1 className="text-2xl font-bold text-gray-900">관리자 대시보드</h1>
           </div>
-          <p className="text-gray-500 text-sm">프로그램의 전반적인 성과와 건전성을 코호트(기수) 단위로 분석합니다.</p>
+          <p className="text-gray-500 text-sm">프로그램의 전반적인 성과와 건전성을 코호트(기수) 단위로 시각화하여 분석합니다.</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center bg-white border border-gray-200 rounded-lg p-1 shadow-sm">
@@ -1692,7 +1692,7 @@ function AdminDashboard() {
             <button className="px-3 py-1.5 text-sm font-semibold text-gray-500 hover:text-gray-900">전체 기간</button>
           </div>
           <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-bold hover:bg-gray-50 flex items-center gap-2 shadow-sm text-gray-700">
-            <Filter size={16} /> 코호트 비교
+            <Filter size={16} /> 코호트 필터
           </button>
         </div>
       </div>
@@ -1704,35 +1704,93 @@ function AdminDashboard() {
         <KpiCard title="프로그램 만족도" value="4.8" subtext="5.0 만점 기준" icon={Star} trend="up" />
         <KpiCard title="전체 수강생" value="128명" subtext="현재 운영 기수 합계" icon={Users} trend="up" />
         <KpiCard title="충원율" value="98.5%" subtext="정원 130명 기준" icon={UserCheck} trend="up" />
-        <KpiCard title="평균 출석률" value="94.2%" subtext="전주 대비 1.2% 상승" icon={CheckSquare} trend="up" />
-        <KpiCard title="평균 진도율" value="87.5%" subtext="권장 진도율 대비 +2%" icon={MonitorPlay} trend="up" />
-        <KpiCard title="예상 수료율" value="92.0%" subtext="AI 예측 기반" icon={GraduationCap} trend="up" />
-        <KpiCard title="정부 보고 충족률" value="100%" subtext="HRD-Net 연동 상태 정상" icon={ShieldCheck} trend="neutral" />
       </div>
 
-      {/* Charts Area */}
-      <div className="grid grid-cols-1 gap-6 mt-6">
-        {/* Chart 2: 과정별 성과 비교 (Expanded width since weekly trend is removed) */}
-        <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm flex flex-col">
-          <h3 className="text-lg font-bold text-gray-900 mb-8 flex items-center gap-2"><BarChart3 size={20} className="text-indigo-500"/> 과정별 핵심 성과 비교</h3>
-          <div className="space-y-8 flex-1 justify-center flex flex-col pb-4">
+      {/* Infographic Dashboard Area */}
+      <div className="grid grid-cols-3 gap-6 mt-6">
+        
+        {/* Chart 1: Student Health (Donut) */}
+        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col">
+          <h3 className="text-base font-bold text-gray-900 mb-6 flex items-center gap-2"><Activity size={18} className="text-indigo-500"/> 수강생 건전성 지표</h3>
+          <div className="flex-1 flex items-center justify-center relative">
+            {/* CSS Donut Chart */}
+            <div className="relative w-40 h-40 rounded-full shadow-sm" style={{ background: 'conic-gradient(#10B981 0% 70%, #F59E0B 70% 85%, #EF4444 85% 100%)' }}>
+              <div className="absolute inset-4 bg-white rounded-full flex items-center justify-center flex-col shadow-inner">
+                <span className="text-3xl font-black text-gray-800 tracking-tight">128</span>
+                <span className="text-[10px] font-bold text-gray-400 mt-1">TOTAL</span>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center gap-4 mt-6">
+            <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-emerald-500 shadow-sm"></span><span className="text-xs font-bold text-gray-600">안전 (70%)</span></div>
+            <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-amber-500 shadow-sm"></span><span className="text-xs font-bold text-gray-600">주의 (15%)</span></div>
+            <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-red-500 shadow-sm"></span><span className="text-xs font-bold text-gray-600">위험 (15%)</span></div>
+          </div>
+        </div>
+
+        {/* Chart 2: Weekly Trend (Bar) */}
+        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col col-span-2">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-base font-bold text-gray-900 flex items-center gap-2"><TrendingUp size={18} className="text-indigo-500"/> 최근 5주 평균 출석률 추이</h3>
+            <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded border border-indigo-100">목표 90%</span>
+          </div>
+          <div className="flex-1 flex items-end justify-between gap-6 px-4 pt-4 relative">
+            {/* Target Line */}
+            <div className="absolute w-[calc(100%-2rem)] h-px border-t border-dashed border-indigo-400 bottom-[calc(90%-16px)] z-0 left-4"></div>
             {[
-              { name: "KDT 서비스 기획 5기", fill: 100, comp: 94 },
-              { name: "KDT 프론트엔드 10기", fill: 95, comp: 88 },
-              { name: "KDT 백엔드 8기", fill: 98, comp: 91 },
-              { name: "KDT 데이터 분석 24기", fill: 100, comp: 96 },
-            ].map((prog, i) => (
-              <div key={i}>
-                <div className="flex justify-between text-sm font-bold mb-3">
-                  <span className="text-gray-800 text-base">{prog.name}</span>
-                  <div className="flex gap-6 text-sm">
-                    <span className="text-gray-500">충원율 {prog.fill}%</span>
-                    <span className="text-indigo-600 font-black">수료율 {prog.comp}%</span>
-                  </div>
+              { week: '1주차', val: 98, color: 'bg-indigo-300' },
+              { week: '2주차', val: 95, color: 'bg-indigo-400' },
+              { week: '3주차', val: 88, color: 'bg-red-400' },
+              { week: '4주차', val: 92, color: 'bg-indigo-500' },
+              { week: '5주차(현재)', val: 96, color: 'bg-indigo-600' },
+            ].map((item, i) => (
+              <div key={i} className="flex flex-col items-center gap-3 flex-1 group relative z-10">
+                {/* Tooltip */}
+                <div className="absolute -top-8 bg-gray-800 text-white text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                  {item.val}%
                 </div>
-                <div className="w-full bg-gray-100 rounded-full h-3 flex overflow-hidden">
-                  <div className="bg-indigo-500 h-full transition-all" style={{ width: `${prog.comp}%` }}></div>
-                  <div className="bg-indigo-200 h-full transition-all" style={{ width: `${prog.fill - prog.comp}%` }}></div>
+                {/* Bar */}
+                <div className="w-full bg-gray-50 border border-gray-100 rounded-t-lg relative h-32 flex items-end overflow-hidden group-hover:bg-gray-100 transition-colors shadow-inner">
+                  <div className={`w-full rounded-t-lg transition-all duration-500 shadow-sm ${item.color}`} style={{ height: `${item.val}%` }}></div>
+                </div>
+                <span className={`text-xs font-bold ${i === 4 ? 'text-indigo-700' : 'text-gray-500'}`}>{item.week}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Chart 3: Cohort Detailed Comparison */}
+        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col col-span-3">
+          <h3 className="text-base font-bold text-gray-900 mb-6 flex items-center gap-2"><BarChart3 size={18} className="text-indigo-500"/> 코호트별 다중 지표 성과 비교</h3>
+          <div className="grid grid-cols-2 gap-x-12 gap-y-6">
+            {[
+              { name: "KDT 서비스 기획 5기", comp: 94, hw: 88 },
+              { name: "KDT 프론트엔드 10기", comp: 88, hw: 75 },
+              { name: "KDT 백엔드 8기", comp: 91, hw: 82 },
+              { name: "KDT 데이터 분석 24기", comp: 96, hw: 95 },
+            ].map((prog, i) => (
+              <div key={i} className="flex items-center gap-6 p-4 rounded-lg border border-gray-100 bg-gray-50/50 hover:bg-white hover:shadow-md transition-all">
+                <div className="w-40">
+                  <span className="text-sm font-bold text-gray-800 block truncate mb-1">{prog.name}</span>
+                  <span className="text-[10px] font-medium text-gray-500 bg-gray-200 px-1.5 py-0.5 rounded">수강생 {Math.floor(Math.random() * 20 + 30)}명</span>
+                </div>
+                <div className="flex-1 space-y-3">
+                  {/* Metric 1: Completion */}
+                  <div className="flex items-center gap-3">
+                    <span className="text-[11px] font-bold text-gray-500 w-12">수료율</span>
+                    <div className="flex-1 bg-gray-200 rounded-full h-2 flex overflow-hidden">
+                      <div className="bg-indigo-500 h-full transition-all" style={{ width: `${prog.comp}%` }}></div>
+                    </div>
+                    <span className="text-[11px] font-black text-indigo-700 w-8 text-right">{prog.comp}%</span>
+                  </div>
+                  {/* Metric 2: HW Submission */}
+                  <div className="flex items-center gap-3">
+                    <span className="text-[11px] font-bold text-gray-500 w-12">과제제출</span>
+                    <div className="flex-1 bg-gray-200 rounded-full h-2 flex overflow-hidden">
+                      <div className={`h-full transition-all ${prog.hw < 80 ? 'bg-orange-400' : 'bg-emerald-500'}`} style={{ width: `${prog.hw}%` }}></div>
+                    </div>
+                    <span className={`text-[11px] font-black w-8 text-right ${prog.hw < 80 ? 'text-orange-500' : 'text-emerald-600'}`}>{prog.hw}%</span>
+                  </div>
                 </div>
               </div>
             ))}
