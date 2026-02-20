@@ -8,7 +8,7 @@ import {
   Activity, Briefcase, Sliders, Database, Zap,
   TrendingUp, TrendingDown, Clock, UserCheck, DollarSign, Star,
   Link as LinkIcon, Plus, Trash2, DownloadCloud, PlayCircle, Video,
-  ChevronLeft, FileSpreadsheet, PhoneCall
+  ChevronLeft, FileSpreadsheet, PhoneCall, Shield, UserCog
 } from 'lucide-react';
 
 // --- MOCK DATA ---
@@ -67,6 +67,16 @@ const KpiCard = ({ title, value, subtext, icon: Icon, trend }) => (
       {trend === 'neutral' && <span className="text-gray-500 flex items-center">-</span>}
       <span className="text-gray-400 font-normal">| {subtext}</span>
     </div>
+  </div>
+);
+
+// CSS Switch Toggle Component
+const ToggleSwitch = ({ checked, onChange }) => (
+  <div 
+    onClick={onChange}
+    className={`w-10 h-5.5 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 ease-in-out ${checked ? 'bg-indigo-500' : 'bg-gray-200'}`}
+  >
+    <div className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${checked ? 'translate-x-4.5' : 'translate-x-0'}`}></div>
   </div>
 );
 
@@ -204,6 +214,7 @@ export default function App() {
         {/* CONTENT AREA */}
         <div className="flex-1 overflow-auto p-8 bg-[#F8FAFC]">
           {activeMenu === 'admin_setup' && <AdminProgramSetup />}
+          {activeMenu === 'admin_operators' && <AdminOperatorMgmt />}
           {activeMenu === 'op_students' && <OperatorStudentMgmt selectedStudentForDetail={selectedStudentForDetail} setSelectedStudentForDetail={setSelectedStudentForDetail} />}
           {activeMenu === 'op_attendance' && <OperatorAttendanceMgmt onStudentClick={handleNavigateToStudent} />}
           {activeMenu === 'op_qna' && <OperatorQnAMgmt />}
@@ -213,7 +224,7 @@ export default function App() {
           {activeMenu === 'op_dashboard' && <OperatorDashboard />}
 
           {/* Generic Placeholder for other menus */}
-          {['admin_recruitment', 'admin_instructors', 'admin_operators', 'admin_analytics', 'op_instructors', 'op_career', 'op_settings'].includes(activeMenu) && (
+          {['admin_recruitment', 'admin_instructors', 'admin_analytics', 'op_instructors', 'op_career', 'op_settings'].includes(activeMenu) && (
             <div className="flex flex-col items-center justify-center h-[70vh] text-center max-w-lg mx-auto">
               <div className="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mb-6">
                 <Database size={32} className="text-indigo-400" />
@@ -237,6 +248,254 @@ export default function App() {
 // ============================================================================
 // ADMINISTRATION COMPONENTS
 // ============================================================================
+
+function AdminOperatorMgmt() {
+  const [activeTab, setActiveTab] = useState('mapping');
+
+  // Mock data for Operators
+  const operators = [
+    { id: 1, name: "김마스터", email: "master@kernel.com", role: "Super Admin", status: "Active" },
+    { id: 2, name: "이관리", email: "manager@kernel.com", role: "관리자", status: "Active" },
+    { id: 3, name: "박운영", email: "op1@kernel.com", role: "운영자", status: "Active" },
+    { id: 4, name: "최지원", email: "op2@kernel.com", role: "운영자", status: "Absent" },
+    { id: 5, name: "정강사", email: "inst@kernel.com", role: "강사", status: "Active" },
+    { id: 6, name: "한멘토", email: "mentor@kernel.com", role: "강사", status: "Active" },
+  ];
+
+  // Mock data for Permissions (Matrix)
+  const [permissions, setPermissions] = useState([
+    { menu: "관리자 대시보드", super: true, admin: true, op: false, inst: false },
+    { menu: "프로그램 셋업 (생성/수정)", super: true, admin: true, op: false, inst: false },
+    { menu: "운영자 배정 및 권한 설정", super: true, admin: false, op: false, inst: false },
+    { menu: "운영자 대시보드 (KPI)", super: true, admin: true, op: true, inst: false },
+    { menu: "수강생 관리 (CRM 조회/수정)", super: true, admin: true, op: true, inst: false },
+    { menu: "출결 관리 및 점수 입력", super: true, admin: true, op: true, inst: true },
+    { menu: "운영 상담 (QnA 답변)", super: true, admin: true, op: true, inst: true },
+  ]);
+
+  const togglePermission = (idx, roleKey) => {
+    const newPerms = [...permissions];
+    if (roleKey !== 'super') { // Super Admin is always locked to true
+      newPerms[idx][roleKey] = !newPerms[idx][roleKey];
+      setPermissions(newPerms);
+    }
+  };
+
+  const getRoleBadge = (role) => {
+    switch(role) {
+      case 'Super Admin': return <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded text-[11px] font-black border border-purple-200">SUPER</span>;
+      case '관리자': return <span className="px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded text-[11px] font-bold border border-indigo-200">관리자</span>;
+      case '운영자': return <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-[11px] font-bold border border-blue-200">운영자</span>;
+      case '강사': return <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[11px] font-bold border border-emerald-200">강사/멘토</span>;
+      default: return null;
+    }
+  };
+
+  return (
+    <div className="h-full flex flex-col max-w-[1400px] mx-auto animate-fadeIn">
+      <div className="flex justify-between items-end mb-6">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <Badge type="primary">ADMIN</Badge>
+            <h1 className="text-2xl font-bold text-gray-900">운영자 배정 및 권한</h1>
+          </div>
+          <p className="text-gray-500 text-sm">코호트별 운영진을 매핑하고 직책(Role)에 따른 플랫폼 접근 권한을 제어합니다.</p>
+        </div>
+        <div className="flex gap-2">
+          <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-semibold hover:bg-gray-50 flex items-center gap-2 shadow-sm text-gray-700">
+            <UserPlus size={16} /> 신규 운영자 등록
+          </button>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 flex-1 flex flex-col overflow-hidden">
+        {/* Tabs */}
+        <div className="border-b border-gray-100 px-6 flex gap-8 bg-gray-50/50">
+          <button
+            onClick={() => setActiveTab('mapping')}
+            className={`py-4 text-sm font-bold border-b-2 transition-colors relative ${activeTab === 'mapping' ? 'border-indigo-600 text-indigo-700' : 'border-transparent text-gray-500 hover:text-gray-800'}`}
+          >
+            코호트 배정 및 운영자 목록
+          </button>
+          <button
+            onClick={() => setActiveTab('permissions')}
+            className={`py-4 text-sm font-bold border-b-2 transition-colors relative ${activeTab === 'permissions' ? 'border-indigo-600 text-indigo-700' : 'border-transparent text-gray-500 hover:text-gray-800'}`}
+          >
+            역할별 권한 설정
+          </button>
+        </div>
+
+        {/* Tab 1: Cohort Mapping & Operator List */}
+        {activeTab === 'mapping' && (
+          <div className="flex-1 overflow-auto custom-scrollbar p-6 bg-[#F8FAFC]">
+            
+            {/* Cohort Assignment Cards */}
+            <div className="mb-8">
+              <h3 className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2"><UserCog size={18} className="text-indigo-600"/> 운영 중인 코호트 배정</h3>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                {[
+                  { name: "KDT 데이터 분석 24기", main: "박운영", backup: "최지원" },
+                  { name: "KDT 프론트엔드 10기", main: "최지원", backup: "박운영", hasWarning: true },
+                  { name: "KDT 서비스 기획 5기", main: "이관리", backup: "-" },
+                ].map((cohort, idx) => (
+                  <div key={idx} className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col hover:border-indigo-300 transition-all">
+                    <div className="flex justify-between items-start mb-4">
+                      <span className="font-bold text-gray-800">{cohort.name}</span>
+                      {cohort.hasWarning && <Badge type="warning" className="animate-pulse">백업 부재중</Badge>}
+                    </div>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-xs font-bold text-gray-500 mb-1 block">메인 담당 운영자</label>
+                        <select className="w-full bg-gray-50 border border-gray-200 text-sm rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-100 font-medium cursor-pointer" defaultValue={cohort.main}>
+                          <option value="-">미지정</option>
+                          {operators.filter(o => o.role !== '강사').map(o => <option key={o.id} value={o.name}>{o.name} ({o.role})</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-500 mb-1 block">부재 시 백업 (대체자)</label>
+                        <select className={`w-full text-sm rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-100 font-medium cursor-pointer ${cohort.hasWarning ? 'bg-red-50 border border-red-200 text-red-700' : 'bg-gray-50 border border-gray-200'}`} defaultValue={cohort.backup}>
+                          <option value="-">미지정</option>
+                          {operators.filter(o => o.role !== '강사').map(o => <option key={o.id} value={o.name}>{o.name} {o.status === 'Absent' ? '(부재중)' : ''}</option>)}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Operator List Table */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h3 className="font-bold text-gray-800">전체 운영자 목록</h3>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input type="text" placeholder="이름 검색" className="pl-9 pr-4 py-1.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-100 outline-none w-48 shadow-sm" />
+                </div>
+              </div>
+              <table className="w-full text-left border-collapse">
+                <thead className="bg-white text-gray-500 text-xs uppercase font-bold border-b border-gray-200">
+                  <tr>
+                    <th className="p-4 pl-6">운영진 정보</th>
+                    <th className="p-4">역할 (Role)</th>
+                    <th className="p-4">상태</th>
+                    <th className="p-4">계정 권한 관리</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {operators.filter(op => op.role !== '강사').map(op => (
+                    <tr key={op.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="p-4 pl-6">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-8 h-8 rounded-full font-black flex items-center justify-center text-xs shadow-sm ${op.status === 'Absent' ? 'bg-gray-200 text-gray-500' : 'bg-indigo-100 text-indigo-700'}`}>
+                            {op.name.charAt(0)}
+                          </div>
+                          <div>
+                            <div className="font-bold text-gray-900">{op.name}</div>
+                            <div className="text-[10px] text-gray-500">{op.email}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-4">{getRoleBadge(op.role)}</td>
+                      <td className="p-4">
+                        {op.status === 'Active' ? 
+                          <span className="flex items-center gap-1.5 text-xs font-bold text-green-600"><span className="w-2 h-2 rounded-full bg-green-500"></span> 활동중</span> : 
+                          <span className="flex items-center gap-1.5 text-xs font-bold text-red-500"><span className="w-2 h-2 rounded-full bg-red-500"></span> 부재중 (휴가 등)</span>
+                        }
+                      </td>
+                      <td className="p-4">
+                        <button className="text-xs font-bold text-gray-500 hover:text-indigo-600 border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50 transition-colors">
+                          정보 수정
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 2: Permissions Matrix */}
+        {activeTab === 'permissions' && (
+          <div className="flex-1 flex flex-col bg-[#F8FAFC] p-6">
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="p-5 border-b border-gray-100 bg-indigo-50/30 flex justify-between items-center">
+                <div>
+                  <h3 className="font-bold text-gray-900 flex items-center gap-2"><Shield size={18} className="text-indigo-600"/> 플랫폼 메뉴 접근 권한 제어</h3>
+                  <p className="text-xs text-gray-500 mt-1">Super Admin은 모든 권한을 가지며 수정할 수 없습니다. 변경 사항은 즉시 반영됩니다.</p>
+                </div>
+                <button className="px-5 py-2 bg-indigo-600 text-white rounded-lg text-sm font-bold shadow-sm hover:bg-indigo-700 transition-colors">
+                  권한 설정 저장
+                </button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse min-w-[800px]">
+                  <thead className="bg-gray-50/80 border-b border-gray-200">
+                    <tr>
+                      <th className="p-4 pl-6 text-sm font-bold text-gray-700 w-1/3">메뉴 및 기능</th>
+                      <th className="p-4 text-center">
+                        <div className="flex flex-col items-center gap-1">
+                          {getRoleBadge('Super Admin')}
+                          <span className="text-[10px] text-gray-400 font-medium">모든 권한</span>
+                        </div>
+                      </th>
+                      <th className="p-4 text-center">
+                        <div className="flex flex-col items-center gap-1">
+                          {getRoleBadge('관리자')}
+                          <span className="text-[10px] text-gray-400 font-medium">프로그램 기획/총괄</span>
+                        </div>
+                      </th>
+                      <th className="p-4 text-center">
+                        <div className="flex flex-col items-center gap-1">
+                          {getRoleBadge('운영자')}
+                          <span className="text-[10px] text-gray-400 font-medium">실무 매니저</span>
+                        </div>
+                      </th>
+                      <th className="p-4 text-center">
+                        <div className="flex flex-col items-center gap-1">
+                          {getRoleBadge('강사')}
+                          <span className="text-[10px] text-gray-400 font-medium">학습 채점/피드백</span>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {permissions.map((perm, idx) => (
+                      <tr key={idx} className="hover:bg-gray-50 transition-colors">
+                        <td className="p-4 pl-6 font-bold text-gray-800 text-sm">{perm.menu}</td>
+                        <td className="p-4">
+                          <div className="flex justify-center opacity-50 cursor-not-allowed" title="Super Admin은 수정 불가">
+                            <ToggleSwitch checked={perm.super} onChange={() => {}} />
+                          </div>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex justify-center">
+                            <ToggleSwitch checked={perm.admin} onChange={() => togglePermission(idx, 'admin')} />
+                          </div>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex justify-center">
+                            <ToggleSwitch checked={perm.op} onChange={() => togglePermission(idx, 'op')} />
+                          </div>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex justify-center">
+                            <ToggleSwitch checked={perm.inst} onChange={() => togglePermission(idx, 'inst')} />
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function AdminProgramSetup() {
   const [step, setStep] = useState(1);
@@ -998,11 +1257,27 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
               </div>
             </div>
           </div>
+          
+          {/* 이력서, 포트폴리오, 프로젝트 */}
+          <div className="mt-6 pt-5 border-t border-gray-100">
+            <h4 className="text-sm font-bold text-gray-800 mb-3">제출 서류 및 산출물</h4>
+            <div className="flex gap-3">
+              <button className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-gray-50 border border-gray-200 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-colors text-sm font-bold text-gray-700 shadow-sm">
+                <FileText size={16} className="text-indigo-500" /> 이력서 보기
+              </button>
+              <button className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-gray-50 border border-gray-200 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-colors text-sm font-bold text-gray-700 shadow-sm">
+                <Briefcase size={16} className="text-purple-500" /> 포트폴리오
+              </button>
+              <button className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-gray-50 border border-gray-200 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-colors text-sm font-bold text-gray-700 shadow-sm">
+                <MonitorPlay size={16} className="text-emerald-500" /> 최종 프로젝트
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-6 mb-6">
-          {/* 학습 성과 (통합 뷰) */}
-          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+          {/* Left Column: 학습 성과 (통합 뷰) & 역량평가 결과 */}
+          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col">
             <h3 className="text-base font-bold text-gray-900 mb-5 flex items-center gap-2"><BookOpen size={18} className="text-indigo-500"/> 학습 성과 통합 뷰</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center p-3.5 bg-gray-50 rounded-lg border border-gray-100">
@@ -1036,88 +1311,147 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
                 {selectedStudent.completionPrediction === '안정권' ? <Badge type="success">안정권</Badge> : <Badge type="danger">이탈/미수료 위험</Badge>}
               </div>
             </div>
-          </div>
 
-          {/* 출결 현황 (간소화) */}
-          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col">
-            <h3 className="text-base font-bold text-gray-900 mb-5 flex items-center gap-2"><CheckSquare size={18} className="text-green-500"/> 출결 현황 요약</h3>
-            <div className="grid grid-cols-2 gap-4 mb-5">
-              <div className="p-4 bg-gray-50 rounded-lg border border-gray-100 flex flex-col items-center justify-center shadow-inner">
-                <span className="text-xs font-bold text-gray-500 mb-1">누적 출석률</span>
-                <span className="text-3xl font-black text-gray-900">{selectedStudent.attendance}</span>
-              </div>
-              <div className="p-4 bg-red-50/30 rounded-lg border border-red-100 flex flex-col items-center justify-center shadow-inner">
-                <span className="text-xs font-bold text-red-500 mb-1">지각 / 결석 누적</span>
-                <span className="text-3xl font-black text-red-600">{selectedStudent.lateCount}<span className="text-lg text-red-300 mx-1">/</span>{selectedStudent.absenceCount}</span>
+            {/* 역량평가 결과 (Radar Chart) */}
+            <div className="mt-6 pt-6 border-t border-gray-100 flex-1 flex flex-col">
+              <h4 className="text-sm font-bold text-gray-800 mb-2 flex items-center gap-2">
+                <Star size={16} className="text-yellow-500 fill-yellow-500"/> 역량평가 결과 (수료 시점 예측)
+              </h4>
+              <div className="flex-1 flex justify-center items-center py-4 relative">
+                <svg width="340" height="280" viewBox="0 0 340 280">
+                  {/* Grid Hexagons */}
+                  {[20, 40, 60, 80].map(r => (
+                    <polygon 
+                      key={r}
+                      points={`
+                        170,${140 - r} 
+                        ${170 + r*0.866},${140 - r*0.5} 
+                        ${170 + r*0.866},${140 + r*0.5} 
+                        170,${140 + r} 
+                        ${170 - r*0.866},${140 + r*0.5} 
+                        ${170 - r*0.866},${140 - r*0.5}
+                      `}
+                      fill="none" stroke="#E2E8F0" strokeWidth="1"
+                    />
+                  ))}
+                  {/* Axes Lines */}
+                  <line x1="170" y1="140" x2="170" y2="60" stroke="#E2E8F0" strokeWidth="1"/>
+                  <line x1="170" y1="140" x2="239.2" y2="100" stroke="#E2E8F0" strokeWidth="1"/>
+                  <line x1="170" y1="140" x2="239.2" y2="180" stroke="#E2E8F0" strokeWidth="1"/>
+                  <line x1="170" y1="140" x2="170" y2="220" stroke="#E2E8F0" strokeWidth="1"/>
+                  <line x1="170" y1="140" x2="100.8" y2="180" stroke="#E2E8F0" strokeWidth="1"/>
+                  <line x1="170" y1="140" x2="100.8" y2="100" stroke="#E2E8F0" strokeWidth="1"/>
+                  
+                  {/* Data Polygon - Dynamic scaling logic simulation */}
+                  <polygon 
+                    points={`
+                      170,${140 - 72} 
+                      ${170 + 56*0.866},${140 - 56*0.5} 
+                      ${170 + 76*0.866},${140 + 76*0.5} 
+                      170,${140 + 64} 
+                      ${170 - 68*0.866},${140 + 68*0.5} 
+                      ${170 - 72*0.866},${140 - 72*0.5}
+                    `}
+                    fill="rgba(255, 45, 85, 0.35)" stroke="#FF2D55" strokeWidth="2.5" strokeLinejoin="round"
+                  />
+                  
+                  {/* Labels */}
+                  <text x="170" y="45" textAnchor="middle" fill="#374151" fontSize="12" fontWeight="bold">통계·수학</text>
+                  <text x="245" y="95" textAnchor="start" fill="#374151" fontSize="12" fontWeight="bold">머신러닝 모델링</text>
+                  <text x="245" y="195" textAnchor="start" fill="#374151" fontSize="12" fontWeight="bold">코딩·엔지니어링</text>
+                  <text x="170" y="245" textAnchor="middle" fill="#374151" fontSize="12" fontWeight="bold">비즈니스 문제정의</text>
+                  <text x="95" y="195" textAnchor="end" fill="#374151" fontSize="12" fontWeight="bold">커뮤니케이션</text>
+                  <text x="95" y="95" textAnchor="end" fill="#374151" fontSize="12" fontWeight="bold">태도·성장역량</text>
+                </svg>
               </div>
             </div>
-            <div className="flex-1 flex flex-col">
-              <div className="flex justify-between items-center mb-3">
-                 <h4 className="text-xs font-bold text-gray-600">최근 출결 이력 (2주)</h4>
-                 <button className="text-[10px] font-bold text-indigo-600 hover:underline">고용24 원본 데이터 보기</button>
-              </div>
-              <div className="flex-1 bg-white rounded-lg border border-gray-200 shadow-sm p-4 flex flex-col justify-center space-y-3">
-                 <div className="flex justify-between items-center text-sm font-medium border-b border-gray-50 pb-2"><span>10.23 (수)</span> <Badge type="success" className="!bg-green-100">출석</Badge></div>
-                 <div className="flex justify-between items-center text-sm font-medium border-b border-gray-50 pb-2"><span>10.24 (목)</span> <Badge type="danger" className="!bg-red-100">결석</Badge></div>
-                 <div className="flex justify-between items-center text-sm font-medium border-b border-gray-50 pb-2"><span>10.25 (금)</span> <Badge type="warning" className="!bg-yellow-100">지각</Badge></div>
-                 <div className="flex justify-between items-center text-sm font-medium border-b border-gray-50 pb-2"><span>10.26 (월)</span> <Badge type="success" className="!bg-green-100">출석</Badge></div>
-                 <div className="flex justify-between items-center text-sm font-medium"><span>10.27 (화)</span> <Badge type="danger" className="!bg-red-100">결석</Badge></div>
-              </div>
-            </div>
           </div>
-        </div>
 
-        {/* 상담 히스토리 타임라인 */}
-        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-base font-bold text-gray-900 flex items-center gap-2"><MessageSquare size={18} className="text-blue-500"/> 상담 및 넛지 타임라인</h3>
-            <button className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 transition-colors">
-              전체 이력 상세 보기 <ChevronRight size={14}/>
-            </button>
-          </div>
-          
-          <div className="relative pl-6 space-y-6">
-            {/* Timeline line */}
-            <div className="absolute left-[39px] top-2 bottom-2 w-px bg-gray-200"></div>
+          {/* Right Column: 출결 현황 & 상담 히스토리 타임라인 */}
+          <div className="flex flex-col gap-6">
             
-            <div className="relative flex items-start gap-5">
-              <div className="bg-indigo-50 text-indigo-500 w-10 h-10 rounded-full flex items-center justify-center border-4 border-white shadow-sm z-10 shrink-0">
-                <MessageCircle size={16}/>
+            {/* 출결 현황 (간소화) */}
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col">
+              <h3 className="text-base font-bold text-gray-900 mb-5 flex items-center gap-2"><CheckSquare size={18} className="text-green-500"/> 출결 현황 요약</h3>
+              <div className="grid grid-cols-2 gap-4 mb-5">
+                <div className="p-4 bg-gray-50 rounded-lg border border-gray-100 flex flex-col items-center justify-center shadow-inner">
+                  <span className="text-xs font-bold text-gray-500 mb-1">누적 출석률</span>
+                  <span className="text-3xl font-black text-gray-900">{selectedStudent.attendance}</span>
+                </div>
+                <div className="p-4 bg-red-50/30 rounded-lg border border-red-100 flex flex-col items-center justify-center shadow-inner">
+                  <span className="text-xs font-bold text-red-500 mb-1">지각 / 결석 누적</span>
+                  <span className="text-3xl font-black text-red-600">{selectedStudent.lateCount}<span className="text-lg text-red-300 mx-1">/</span>{selectedStudent.absenceCount}</span>
+                </div>
               </div>
-              <div className="flex-1 bg-white p-4.5 rounded-lg border border-gray-200 shadow-sm hover:border-indigo-300 transition-colors">
-                 <div className="flex justify-between items-center mb-2">
-                   <span className="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-1 rounded">넛지 발송</span>
-                   <time className="text-[11px] font-medium text-gray-400">2023.10.25 14:30</time>
-                 </div>
-                 <p className="text-sm text-gray-700 font-medium leading-relaxed">진도율 하락 경고 및 학습 독려 카카오톡 알림톡 발송 (시스템 자동)</p>
+              <div className="flex-1 flex flex-col">
+                <div className="flex justify-between items-center mb-3">
+                   <h4 className="text-xs font-bold text-gray-600">최근 출결 이력 (2주)</h4>
+                   <button className="text-[10px] font-bold text-indigo-600 hover:underline">고용24 원본 데이터 보기</button>
+                </div>
+                <div className="flex-1 bg-white rounded-lg border border-gray-200 shadow-sm p-4 flex flex-col justify-center space-y-3">
+                   <div className="flex justify-between items-center text-sm font-medium border-b border-gray-50 pb-2"><span>10.23 (수)</span> <Badge type="success" className="!bg-green-100">출석</Badge></div>
+                   <div className="flex justify-between items-center text-sm font-medium border-b border-gray-50 pb-2"><span>10.24 (목)</span> <Badge type="danger" className="!bg-red-100">결석</Badge></div>
+                   <div className="flex justify-between items-center text-sm font-medium border-b border-gray-50 pb-2"><span>10.25 (금)</span> <Badge type="warning" className="!bg-yellow-100">지각</Badge></div>
+                   <div className="flex justify-between items-center text-sm font-medium border-b border-gray-50 pb-2"><span>10.26 (월)</span> <Badge type="success" className="!bg-green-100">출석</Badge></div>
+                   <div className="flex justify-between items-center text-sm font-medium"><span>10.27 (화)</span> <Badge type="danger" className="!bg-red-100">결석</Badge></div>
+                </div>
               </div>
             </div>
 
-            <div className="relative flex items-start gap-5">
-              <div className="bg-green-50 text-green-500 w-10 h-10 rounded-full flex items-center justify-center border-4 border-white shadow-sm z-10 shrink-0">
-                <PhoneCall size={16}/>
+            {/* 상담 히스토리 타임라인 */}
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex-1">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-base font-bold text-gray-900 flex items-center gap-2"><MessageSquare size={18} className="text-blue-500"/> 상담 및 넛지 타임라인</h3>
+                <button className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 transition-colors">
+                  전체 보기 <ChevronRight size={14}/>
+                </button>
               </div>
-              <div className="flex-1 bg-white p-4.5 rounded-lg border border-gray-200 shadow-sm hover:border-green-300 transition-colors">
-                 <div className="flex justify-between items-center mb-2">
-                   <span className="text-xs font-bold text-green-700 bg-green-50 border border-green-100 px-2 py-1 rounded">유선 상담 기록</span>
-                   <time className="text-[11px] font-medium text-gray-400">2023.10.20 16:00</time>
-                 </div>
-                 <p className="text-sm text-gray-700 font-medium leading-relaxed">최근 결석 사유 확인. 개인적인 건강 문제로 며칠 쉬었으나 다음주부터 정상 참여 약속함. (담당 매니저: 김코딩)</p>
+              
+              <div className="relative pl-6 space-y-6">
+                {/* Timeline line */}
+                <div className="absolute left-[39px] top-2 bottom-2 w-px bg-gray-200"></div>
+                
+                <div className="relative flex items-start gap-5">
+                  <div className="bg-indigo-50 text-indigo-500 w-10 h-10 rounded-full flex items-center justify-center border-4 border-white shadow-sm z-10 shrink-0">
+                    <MessageCircle size={16}/>
+                  </div>
+                  <div className="flex-1 bg-white p-4.5 rounded-lg border border-gray-200 shadow-sm hover:border-indigo-300 transition-colors">
+                     <div className="flex justify-between items-center mb-2">
+                       <span className="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-1 rounded">넛지 발송</span>
+                       <time className="text-[11px] font-medium text-gray-400">2023.10.25 14:30</time>
+                     </div>
+                     <p className="text-sm text-gray-700 font-medium leading-relaxed">진도율 하락 경고 및 학습 독려 카카오톡 알림톡 발송 (시스템 자동)</p>
+                  </div>
+                </div>
+
+                <div className="relative flex items-start gap-5">
+                  <div className="bg-green-50 text-green-500 w-10 h-10 rounded-full flex items-center justify-center border-4 border-white shadow-sm z-10 shrink-0">
+                    <PhoneCall size={16}/>
+                  </div>
+                  <div className="flex-1 bg-white p-4.5 rounded-lg border border-gray-200 shadow-sm hover:border-green-300 transition-colors">
+                     <div className="flex justify-between items-center mb-2">
+                       <span className="text-xs font-bold text-green-700 bg-green-50 border border-green-100 px-2 py-1 rounded">유선 상담 기록</span>
+                       <time className="text-[11px] font-medium text-gray-400">2023.10.20 16:00</time>
+                     </div>
+                     <p className="text-sm text-gray-700 font-medium leading-relaxed">최근 결석 사유 확인. 개인적인 건강 문제로 며칠 쉬었으나 다음주부터 정상 참여 약속함.</p>
+                  </div>
+                </div>
+                
+                <div className="relative flex items-start gap-5 opacity-60">
+                  <div className="bg-gray-100 text-gray-500 w-10 h-10 rounded-full flex items-center justify-center border-4 border-white shadow-sm z-10 shrink-0">
+                    <CheckSquare size={16}/>
+                  </div>
+                  <div className="flex-1 bg-white p-4.5 rounded-lg border border-gray-200 shadow-sm">
+                     <div className="flex justify-between items-center mb-2">
+                       <span className="text-xs font-bold text-gray-600 bg-gray-100 border border-gray-200 px-2 py-1 rounded">OT 참여 완료</span>
+                       <time className="text-[11px] font-medium text-gray-400">2023.10.15 10:00</time>
+                     </div>
+                     <p className="text-sm text-gray-700 font-medium leading-relaxed">프로그램 오리엔테이션 정상 참여 및 환경 세팅 완료.</p>
+                  </div>
+                </div>
               </div>
             </div>
-            
-            <div className="relative flex items-start gap-5 opacity-60">
-              <div className="bg-gray-100 text-gray-500 w-10 h-10 rounded-full flex items-center justify-center border-4 border-white shadow-sm z-10 shrink-0">
-                <CheckSquare size={16}/>
-              </div>
-              <div className="flex-1 bg-white p-4.5 rounded-lg border border-gray-200 shadow-sm">
-                 <div className="flex justify-between items-center mb-2">
-                   <span className="text-xs font-bold text-gray-600 bg-gray-100 border border-gray-200 px-2 py-1 rounded">OT 참여 완료</span>
-                   <time className="text-[11px] font-medium text-gray-400">2023.10.15 10:00</time>
-                 </div>
-                 <p className="text-sm text-gray-700 font-medium leading-relaxed">프로그램 오리엔테이션 정상 참여 및 환경 세팅 완료.</p>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>
