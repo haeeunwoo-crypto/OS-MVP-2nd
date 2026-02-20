@@ -4,10 +4,10 @@
 
 @layer components {
   .btn-operator {
-    @apply flex items-center px-4 py-2 bg-teal-600 text-white rounded-lg font-bold text-sm transition-all hover:bg-teal-700 shadow-sm;
+    @apply flex items-center px-4 py-2 bg-teal-600 text-white rounded-lg font-semibold text-sm transition-all hover:bg-teal-700 shadow-sm;
   }
   .btn-admin {
-    @apply flex items-center px-4 py-2 bg-red-600 text-white rounded-lg font-bold text-sm transition-all hover:bg-red-700 shadow-sm;
+    @apply flex items-center px-4 py-2 bg-red-600 text-white rounded-lg font-semibold text-sm transition-all hover:bg-red-700 shadow-sm;
   }
 }
 
@@ -29,5 +29,5 @@
 }
 
 body {
-  @apply bg-slate-50;
+  @apply bg-[#F8FAFC];
 }
