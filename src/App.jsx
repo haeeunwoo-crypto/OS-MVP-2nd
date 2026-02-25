@@ -8,7 +8,8 @@ import {
   Activity, Briefcase, Sliders, Database, Zap,
   TrendingUp, TrendingDown, Clock, UserCheck, DollarSign, Star,
   Link as LinkIcon, Plus, Trash2, DownloadCloud, PlayCircle, Video,
-  ChevronLeft, FileSpreadsheet, PhoneCall, Shield, UserCog
+  ChevronLeft, FileSpreadsheet, PhoneCall, Shield, UserCog,
+  Target, Edit3, Check, X, FileUp, Award, Layers
 } from 'lucide-react';
 
 // --- MOCK DATA ---
@@ -43,9 +44,10 @@ const Badge = ({ children, type = "default", className = "" }) => {
     danger: "bg-red-50 text-red-700 border border-red-200",
     primary: "bg-indigo-50 text-indigo-700 border border-indigo-200",
     vod: "bg-blue-50 text-blue-700 border border-blue-200",
-    live: "bg-green-50 text-green-700 border border-green-200",
+    live: "bg-emerald-50 text-emerald-700 border border-emerald-200",
     peer: "bg-purple-50 text-purple-700 border border-purple-200",
     offline: "bg-gray-100 text-gray-700 border border-gray-300",
+    skill: "bg-cyan-50 text-cyan-700 border border-cyan-200",
   };
   return (
     <span className={`px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide ${types[type] || types.default} ${className}`}>
@@ -70,7 +72,6 @@ const KpiCard = ({ title, value, subtext, icon: Icon, trend }) => (
   </div>
 );
 
-// CSS Switch Toggle Component
 const ToggleSwitch = ({ checked, onChange }) => (
   <div 
     onClick={onChange}
@@ -91,7 +92,6 @@ export default function App() {
     setActiveMenu('op_students');
   };
 
-  // Integrated Menu Structure
   const menuSections = [
     {
       title: "ADMINISTRATION",
@@ -125,7 +125,6 @@ export default function App() {
       {/* SIDEBAR */}
       <aside className="w-64 bg-white border-r border-gray-200 flex flex-col shadow-sm z-20">
         <div className="p-6 flex items-center justify-center border-b border-gray-100 h-16 box-border">
-          {/* Logo */}
           <div className="flex items-center gap-2">
              <div className="w-7 h-7 bg-[#FF2D55] text-white rounded-bl-xl rounded-tr-xl flex items-center justify-center font-bold text-lg italic" style={{ clipPath: 'polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)' }}>K</div>
              <span className="font-bold text-xl tracking-tight text-[#111827]">Kernel<span className="font-normal text-gray-500 ml-1">Academy</span></span>
@@ -167,11 +166,8 @@ export default function App() {
           ))}
         </nav>
         
-        {/* User Profile Footer */}
         <div className="p-4 border-t border-gray-100 bg-gray-50/50 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
-            M
-          </div>
+          <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">M</div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-gray-900 truncate">Super Admin</p>
             <p className="text-xs text-gray-500 truncate">통합 마스터 계정</p>
@@ -181,7 +177,6 @@ export default function App() {
 
       {/* MAIN CONTENT */}
       <main className="flex-1 flex flex-col overflow-hidden relative">
-        {/* HEADER */}
         <header className="h-16 bg-white/80 backdrop-blur-md border-b border-gray-200 flex items-center justify-between px-8 sticky top-0 z-10">
           <div className="flex items-center gap-4">
             <div className="relative group">
@@ -201,9 +196,7 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="relative p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors">
-              <Zap size={20} />
-            </button>
+            <button className="relative p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors"><Zap size={20} /></button>
             <button className="relative p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors">
               <Bell size={20} />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#FF2D55] rounded-full border-2 border-white"></span>
@@ -211,19 +204,15 @@ export default function App() {
           </div>
         </header>
 
-        {/* CONTENT AREA */}
         <div className="flex-1 overflow-auto p-8 bg-[#F8FAFC]">
           {activeMenu === 'admin_setup' && <AdminProgramSetup />}
           {activeMenu === 'admin_operators' && <AdminOperatorMgmt />}
           {activeMenu === 'op_students' && <OperatorStudentMgmt selectedStudentForDetail={selectedStudentForDetail} setSelectedStudentForDetail={setSelectedStudentForDetail} />}
           {activeMenu === 'op_attendance' && <OperatorAttendanceMgmt onStudentClick={handleNavigateToStudent} />}
           {activeMenu === 'op_qna' && <OperatorQnAMgmt />}
-          
-          {/* Dashboard Placeholders */}
           {activeMenu === 'admin_dashboard' && <AdminDashboard />}
           {activeMenu === 'op_dashboard' && <OperatorDashboard />}
 
-          {/* Generic Placeholder for other menus */}
           {['admin_recruitment', 'admin_instructors', 'admin_analytics', 'op_instructors', 'op_career', 'op_settings'].includes(activeMenu) && (
             <div className="flex flex-col items-center justify-center h-[70vh] text-center max-w-lg mx-auto">
               <div className="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mb-6">
@@ -232,7 +221,6 @@ export default function App() {
               <h2 className="text-2xl font-bold text-gray-900 mb-2">개발 예정 메뉴</h2>
               <p className="text-gray-500 mb-8 leading-relaxed">
                 해당 기능은 <strong>OS 플랫폼 Phase 2</strong> 업데이트 시 반영될 예정입니다.<br/>
-                현재 프로토타입에서는 핵심 모듈(프로그램 셋업, 수강생/출결 관리, 운영 상담)을 우선 확인하실 수 있습니다.
               </p>
               <button className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg text-sm font-semibold shadow-sm hover:bg-gray-50">
                 기획 문서 확인하기
@@ -275,7 +263,7 @@ function AdminOperatorMgmt() {
 
   const togglePermission = (idx, roleKey) => {
     const newPerms = [...permissions];
-    if (roleKey !== 'super') { // Super Admin is always locked to true
+    if (roleKey !== 'super') {
       newPerms[idx][roleKey] = !newPerms[idx][roleKey];
       setPermissions(newPerms);
     }
@@ -328,8 +316,6 @@ function AdminOperatorMgmt() {
         {/* Tab 1: Cohort Mapping & Operator List */}
         {activeTab === 'mapping' && (
           <div className="flex-1 overflow-auto custom-scrollbar p-6 bg-[#F8FAFC]">
-            
-            {/* Cohort Assignment Cards */}
             <div className="mb-8">
               <h3 className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2"><UserCog size={18} className="text-indigo-600"/> 운영 중인 코호트 배정</h3>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
@@ -364,7 +350,6 @@ function AdminOperatorMgmt() {
               </div>
             </div>
 
-            {/* Operator List Table */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
               <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                 <h3 className="font-bold text-gray-800">전체 운영자 목록</h3>
@@ -499,7 +484,7 @@ function AdminOperatorMgmt() {
 
 function AdminProgramSetup() {
   const [step, setStep] = useState(1);
-  const steps = ["기본 정보", "커리큘럼 설정", "시간표 설정", "수료 기준", "과제/퀴즈 등록", "게이미피케이션"];
+  const steps = ["기본 정보", "커리큘럼 설정", "시간표 설정", "수료 기준", "과제/퀴즈/진단 등록", "게이미피케이션"];
 
   const StepHeader = ({ title, badgeText }) => (
     <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
@@ -519,7 +504,7 @@ function AdminProgramSetup() {
   );
 
   return (
-    <div className="max-w-[1200px] mx-auto space-y-6">
+    <div className="max-w-[1200px] mx-auto space-y-6 animate-fadeIn">
       <div className="flex justify-between items-end bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -590,7 +575,6 @@ function AdminProgramSetup() {
                 </div>
               </div>
 
-              {/* Modified Sections for Step 1 */}
               <div className="col-span-2 border-t border-gray-100 pt-6 mt-2">
                 <h4 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2"><BookOpen size={16} className="text-indigo-500"/> 입과 요청 사항 필수강의(커스터마이징)</h4>
                 <div className="grid grid-cols-4 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -672,7 +656,6 @@ function AdminProgramSetup() {
                </div>
             </div>
 
-            {/* Curriculum List View (Modified for Step 2) */}
             <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
                <div className="bg-indigo-50 px-6 py-4 border-b border-indigo-100 flex justify-between items-center">
                  <div>
@@ -683,7 +666,6 @@ function AdminProgramSetup() {
                </div>
                
                <div className="p-6 space-y-6 max-h-[400px] overflow-y-auto custom-scrollbar">
-                 {/* Section 1 */}
                  <div>
                    <h4 className="text-sm font-bold text-[#FF2D55] mb-3 pb-2 border-b border-gray-100">Step 4. Python Programming</h4>
                    <div className="space-y-2">
@@ -704,7 +686,6 @@ function AdminProgramSetup() {
                    </div>
                  </div>
 
-                 {/* Section 2 */}
                  <div>
                    <h4 className="text-sm font-bold text-gray-800 mb-3 pb-2 border-b border-gray-100">Step 5. Database & SQL (예정)</h4>
                    <div className="space-y-2">
@@ -732,7 +713,6 @@ function AdminProgramSetup() {
           <div className="space-y-6 flex-1 animate-fadeIn">
             <StepHeader title="Step 3. 주간/월간 시간표 캘린더 세팅" badgeText="학생용 LMS 시간표 UI 매핑" />
             
-            {/* Calendar Controls (Modified to Weekly) */}
             <div className="flex justify-between items-center mb-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
                <div className="flex items-center gap-6">
                  <div className="flex items-center bg-white border border-gray-300 rounded px-2 py-1.5 shadow-sm">
@@ -759,9 +739,7 @@ function AdminProgramSetup() {
                </div>
             </div>
 
-            {/* Weekly Calendar Grid (Reconstructed from Image 1) */}
-            <div className="border border-gray-200 rounded-xl bg-white overflow-hidden shadow-sm flex flex-col min-w-[900px]">
-               {/* Headers */}
+            <div className="border border-gray-200 rounded-xl bg-white overflow-hidden shadow-sm flex flex-col min-w-[900px] overflow-x-auto">
                <div className="flex border-b border-gray-200 bg-white">
                   <div className="w-[80px] border-r border-gray-200 p-3 text-center text-[11px] font-bold text-gray-400 flex items-center justify-center">WEEK 6</div>
                   <div className="flex-1 border-r border-gray-200 p-3 text-center text-sm font-bold text-gray-800">월 <span className="text-gray-400 font-medium ml-1">12.1</span></div>
@@ -773,17 +751,16 @@ function AdminProgramSetup() {
                   <div className="flex-1 p-3 text-center text-sm font-bold text-gray-800">금 <span className="text-gray-400 font-medium ml-1">12.5</span></div>
                </div>
                
-               {/* Row 1: 09:00 - 12:00 */}
                <div className="flex border-b border-gray-200 min-h-[110px]">
                   <div className="w-[80px] border-r border-gray-200 p-2 text-center text-[10px] font-bold text-gray-600 flex flex-col justify-center gap-1"><span>09:00</span><span>12:00</span></div>
                   <div className="flex-1 border-r border-gray-200 p-3 flex items-center justify-center"><input type="text" className="text-[11px] text-gray-300 font-bold bg-transparent outline-none w-full text-center" defaultValue="SQL 실무 적용 실습" /></div>
                   <div className="flex-1 border-r border-gray-200 p-3 flex items-center justify-center"><input type="text" className="text-[11px] text-gray-300 font-bold bg-transparent outline-none w-full text-center" defaultValue="SQL 실무 적용 실습" /></div>
                   
                   <div className="flex-1 border-r border-gray-200 p-2">
-                    <div className="h-full border border-green-300 rounded p-2.5 flex flex-col bg-green-50/30 hover:border-green-400 transition-colors">
-                      <Badge type="live" className="w-max mb-1.5 !px-1.5 !py-0.5 !text-[10px] !bg-green-100">LIVE</Badge>
+                    <div className="h-full border border-emerald-300 rounded p-2.5 flex flex-col bg-emerald-50/30 hover:border-emerald-400 transition-colors">
+                      <Badge type="live" className="w-max mb-1.5 !px-1.5 !py-0.5 !text-[10px] !bg-emerald-100">LIVE</Badge>
                       <textarea className="text-[11px] font-bold text-gray-800 leading-snug bg-transparent border-none p-0 outline-none resize-none w-full flex-1" defaultValue="데이터 분석가가 되기 위한 준비 SQL 코딩테스트"></textarea>
-                      <div className="mt-1 flex items-center justify-between text-[10px] text-gray-500 border-t border-green-200/50 pt-1.5">
+                      <div className="mt-1 flex items-center justify-between text-[10px] text-gray-500 border-t border-emerald-200/50 pt-1.5">
                         <input type="text" className="bg-transparent border-none outline-none w-full" defaultValue="프로젝트 OT (이지훈)" />
                         <LinkIcon size={12} className="text-indigo-400 flex-shrink-0"/>
                       </div>
@@ -811,24 +788,14 @@ function AdminProgramSetup() {
                     </div>
                   </div>
                </div>
-
-               {/* Row 2: 점심 */}
-               <div className="flex border-b border-gray-200 h-[36px] bg-gray-50/50">
-                  <div className="w-[80px] border-r border-gray-200 p-1 text-center text-[10px] font-bold text-gray-600 flex flex-col justify-center"><span>12:00</span><span>13:00</span></div>
-                  {[...Array(5)].map((_, i) => (
-                    <div key={i} className={`flex-1 flex justify-center items-center text-[11px] text-gray-300 font-bold ${i < 4 ? 'border-r border-gray-200' : ''}`}>점심</div>
-                  ))}
-               </div>
-
-               {/* Row 3: 13:00 - 18:00 */}
+               
+               {/* 13:00 - 18:00 */}
                <div className="flex border-b border-gray-200 min-h-[140px]">
                   <div className="w-[80px] border-r border-gray-200 p-2 text-center text-[10px] font-bold text-gray-600 flex flex-col justify-center gap-1"><span>13:00</span><span>18:00</span></div>
-                  
                   <div className="flex-1 border-r border-gray-200 p-3 flex items-center justify-center"><input type="text" className="text-[11px] text-gray-300 font-bold bg-transparent outline-none w-full text-center" defaultValue="SQL 실무 적용 실습" /></div>
-                  
                   <div className="flex-1 border-r border-gray-200 p-2 relative">
-                    <div className="h-full border-2 border-green-500 rounded p-2.5 flex flex-col bg-white shadow-sm relative hover:border-green-600 transition-colors">
-                      <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                    <div className="h-full border-2 border-emerald-500 rounded p-2.5 flex flex-col bg-white shadow-sm relative hover:border-emerald-600 transition-colors">
+                      <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
                       <Badge type="vod" className="w-max mb-1.5 !px-1.5 !py-0.5 !text-[10px] !bg-blue-100">VOD</Badge>
                       <textarea className="text-[11px] font-bold text-blue-800 leading-snug bg-transparent border-none p-0 outline-none resize-none w-full flex-1" defaultValue="SQL 실무 적용 실습"></textarea>
                       <div className="mt-1 flex items-center gap-1 border-t border-gray-100 pt-1.5 text-gray-400">
@@ -837,126 +804,21 @@ function AdminProgramSetup() {
                       </div>
                     </div>
                   </div>
-                  
                   <div className="flex-1 border-r border-gray-200 p-2">
-                    <div className="h-full border border-green-300 rounded p-2.5 flex flex-col bg-green-50/30 hover:border-green-400 transition-colors">
-                      <Badge type="live" className="w-max mb-1.5 !px-1.5 !py-0.5 !text-[10px] !bg-green-100">LIVE</Badge>
+                    <div className="h-full border border-emerald-300 rounded p-2.5 flex flex-col bg-emerald-50/30 hover:border-emerald-400 transition-colors">
+                      <Badge type="live" className="w-max mb-1.5 !px-1.5 !py-0.5 !text-[10px] !bg-emerald-100">LIVE</Badge>
                       <textarea className="text-[11px] font-bold text-gray-800 leading-snug bg-transparent border-none p-0 outline-none resize-none w-full flex-1" defaultValue="데이터 분석가가 되기 위한 준비 SQL 코딩테스트"></textarea>
-                      <div className="mt-1 flex items-center gap-1 border-t border-green-200/50 pt-1.5 text-gray-400">
-                        <LinkIcon size={10} className="text-green-600"/>
-                        <input type="text" className="bg-transparent border-none outline-none text-[9px] w-full text-green-700" defaultValue="zoom.us/j/123456789" />
+                      <div className="mt-1 flex items-center gap-1 border-t border-emerald-200/50 pt-1.5 text-gray-400">
+                        <LinkIcon size={10} className="text-emerald-600"/>
+                        <input type="text" className="bg-transparent border-none outline-none text-[9px] w-full text-emerald-700" defaultValue="zoom.us/j/123456789" />
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="flex-1 border-r border-gray-200 p-2">
-                     <div className="h-full border border-green-300 rounded p-2.5 flex flex-col bg-green-50/30 hover:border-green-400 transition-colors">
-                      <Badge type="live" className="w-max mb-1.5 !px-1.5 !py-0.5 !text-[10px] !bg-green-100">LIVE</Badge>
-                      <textarea className="text-[11px] font-bold text-gray-800 leading-snug bg-transparent border-none p-0 outline-none resize-none w-full flex-1" defaultValue="데이터 분석가가 되기 위한 준비 SQL 코딩테스트"></textarea>
-                      <div className="mt-1 flex items-center gap-1 border-t border-green-200/50 pt-1.5 text-gray-400">
-                        <LinkIcon size={10} className="text-green-600"/>
-                        <input type="text" className="bg-transparent border-none outline-none text-[9px] w-full text-green-700" defaultValue="zoom.us/j/123456789" />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1 p-2">
-                     <div className="h-full border border-purple-200 rounded p-2.5 flex flex-col bg-purple-50/10 hover:border-purple-300 transition-colors">
-                      <Badge type="peer" className="w-max mb-1.5 !px-1.5 !py-0.5 !text-[10px] !bg-white">PEER</Badge>
-                      <textarea className="text-[11px] font-bold text-gray-800 leading-snug bg-transparent border-none p-0 outline-none resize-none w-full flex-1" defaultValue="프로젝트를 통한 SQL 실력 완성하기"></textarea>
-                      <div className="mt-1 flex items-center justify-between text-[10px] text-gray-500 border-t border-purple-100 pt-1.5">
-                        <input type="text" className="bg-transparent border-none outline-none w-full" defaultValue="프로젝트 멘토링 (이지훈)" />
-                        <LinkIcon size={12} className="text-purple-400 flex-shrink-0"/>
-                      </div>
-                    </div>
-                  </div>
-               </div>
-
-               {/* Row 4: 저녁 */}
-               <div className="flex border-b border-gray-200 h-[36px] bg-gray-50/50">
-                  <div className="w-[80px] border-r border-gray-200 p-1 text-center text-[10px] font-bold text-gray-600 flex flex-col justify-center"><span>18:00</span><span>19:00</span></div>
-                  {[...Array(5)].map((_, i) => (
-                    <div key={i} className={`flex-1 flex justify-center items-center text-[11px] text-gray-300 font-bold ${i < 4 ? 'border-r border-gray-200' : ''}`}>저녁</div>
-                  ))}
-               </div>
-
-               {/* Row 5: 19:00 - 21:00 */}
-               <div className="flex border-b border-gray-200 min-h-[90px]">
-                  <div className="w-[80px] border-r border-gray-200 p-2 text-center text-[10px] font-bold text-gray-600 flex flex-col justify-center gap-1"><span>19:00</span><span>21:00</span></div>
-                  
-                  <div className="flex-1 border-r border-gray-200 p-3 flex items-center justify-center"><input type="text" className="text-[11px] text-gray-300 font-bold bg-transparent outline-none w-full text-center" defaultValue="SQL 실무 적용 실습" /></div>
-                  
-                  <div className="flex-1 border-r border-gray-200 p-2">
-                    <div className="h-full border border-blue-200 rounded p-2.5 flex flex-col bg-blue-50/10 hover:border-blue-300 transition-colors">
-                      <Badge type="vod" className="w-max mb-1.5 !px-1.5 !py-0.5 !text-[10px] !bg-blue-100">VOD</Badge>
-                      <textarea className="text-[11px] font-bold text-blue-800 leading-snug bg-transparent border-none p-0 outline-none resize-none w-full flex-1" defaultValue="SQL 실무 적용 실습"></textarea>
-                      <div className="mt-1 flex items-center gap-1 border-t border-blue-200/50 pt-1.5 text-gray-400">
-                        <LinkIcon size={10}/>
-                        <input type="text" className="bg-transparent border-none outline-none text-[9px] w-full text-blue-700" defaultValue="lms.fastcampus.co.kr/c/.." />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1 border-r border-gray-200 p-2">
-                    <div className="h-full border border-blue-200 rounded p-2.5 flex flex-col bg-blue-50/10 hover:border-blue-300 transition-colors">
-                      <Badge type="vod" className="w-max mb-1.5 !px-1.5 !py-0.5 !text-[10px] !bg-blue-100">VOD</Badge>
-                      <textarea className="text-[11px] font-bold text-blue-800 leading-snug bg-transparent border-none p-0 outline-none resize-none w-full flex-1" defaultValue="SQL 실무 적용 실습"></textarea>
-                      <div className="mt-1 flex items-center gap-1 border-t border-blue-200/50 pt-1.5 text-gray-400">
-                        <LinkIcon size={10}/>
-                        <input type="text" className="bg-transparent border-none outline-none text-[9px] w-full text-blue-700" defaultValue="lms.fastcampus.co.kr/c/.." />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1 border-r border-gray-200 p-2">
-                     <div className="h-full border border-blue-200 rounded p-2.5 flex flex-col bg-blue-50/10 hover:border-blue-300 transition-colors">
-                      <Badge type="vod" className="w-max mb-1.5 !px-1.5 !py-0.5 !text-[10px] !bg-blue-100">VOD</Badge>
-                      <textarea className="text-[11px] font-bold text-blue-800 leading-snug bg-transparent border-none p-0 outline-none resize-none w-full flex-1" defaultValue="SQL 실무 적용 실습"></textarea>
-                      <div className="mt-1 flex items-center gap-1 border-t border-blue-200/50 pt-1.5 text-gray-400">
-                        <LinkIcon size={10}/>
-                        <input type="text" className="bg-transparent border-none outline-none text-[9px] w-full text-blue-700" defaultValue="lms.fastcampus.co.kr/c/.." />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1 p-2">
-                     <div className="h-full border border-purple-200 rounded p-2.5 flex flex-col bg-purple-50/10 hover:border-purple-300 transition-colors">
-                      <Badge type="peer" className="w-max mb-1.5 !px-1.5 !py-0.5 !text-[10px] !bg-white">PEER</Badge>
-                      <textarea className="text-[11px] font-bold text-gray-800 leading-snug bg-transparent border-none p-0 outline-none resize-none w-full flex-1" defaultValue="프로젝트를 통한 SQL 실력 완성하기"></textarea>
-                      <div className="mt-1 flex items-center justify-between text-[10px] text-gray-500 border-t border-purple-100 pt-1.5">
-                        <input type="text" className="bg-transparent border-none outline-none w-full" defaultValue="게더타운 그룹 룸" />
-                        <LinkIcon size={12} className="text-purple-400 flex-shrink-0"/>
-                      </div>
-                    </div>
-                  </div>
-               </div>
-
-               {/* Row 6: 과제 */}
-               <div className="flex border-gray-200 min-h-[46px] bg-red-50/5">
-                  <div className="w-[80px] border-r border-gray-200 p-2 flex items-center justify-center text-[11px] font-bold text-red-500">과제</div>
-                  
-                  <div className="flex-1 border-r border-gray-200 p-2 flex items-center relative">
-                    <span className="text-[11px] font-bold text-gray-300 pl-2">3-4. SQL Quiz 4</span>
-                    <CheckCircle2 size={14} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-300"/>
-                  </div>
-                  
-                  <div className="flex-1 border-r border-gray-200 p-1.5 flex items-center">
-                    <div className="w-full h-full border border-red-200 rounded text-[11px] text-gray-500 bg-red-50/50 flex items-center px-3 font-medium">3-5. SQL Quiz 5</div>
-                  </div>
-                  
-                  <div className="flex-1 border-r border-gray-200 p-1.5 flex items-center">
-                    <div className="w-full h-full border border-red-200 rounded text-[11px] text-gray-500 bg-red-50/50 flex items-center px-3 font-medium">3-6. SQL Quiz 6</div>
-                  </div>
-                  
-                  <div className="flex-1 border-r border-gray-200 p-1.5 flex items-center">
-                    <div className="w-full h-full border border-red-200 rounded text-[11px] text-gray-500 bg-red-50/50 flex items-center px-3 font-medium">3-7. SQL Quiz 7</div>
-                  </div>
-                  
+                  <div className="flex-1 border-r border-gray-200 p-2"></div>
                   <div className="flex-1 p-2"></div>
                </div>
             </div>
 
-            {/* Editing Panel for Selected Date */}
             <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 mt-4 flex gap-6 items-start shadow-sm">
                <div className="w-48">
                  <h4 className="font-bold text-gray-900 mb-1 flex items-center gap-2"><Calendar size={16} className="text-indigo-600"/> 선택된 일자</h4>
@@ -978,7 +840,6 @@ function AdminProgramSetup() {
                      <button className="text-gray-400 hover:text-red-500 ml-2"><Trash2 size={16}/></button>
                    </div>
                    
-                   {/* Learning Objective Textarea */}
                    <div className="mt-2 bg-gray-50 rounded border border-gray-100 p-3">
                      <label className="flex items-center gap-1.5 text-xs font-bold text-indigo-600 mb-2">
                        <FileText size={14}/> 학습 목표 및 상세 내용
@@ -1068,17 +929,22 @@ function AdminProgramSetup() {
 
         {step === 5 && (
           <div className="space-y-6 flex-1 animate-fadeIn">
-             <StepHeader title="Step 5. 과제/퀴즈 등록" badgeText="제출 필요한 항목 설정" />
+             <StepHeader title="Step 5. 과제/퀴즈/스킬 진단 매핑" badgeText="학습 성과 측정 도구 설정" />
             
-            <p className="text-sm text-gray-600 mb-4">Step 2와 Step 3에서 확정된 강의 타임라인에 퀴즈와 과제를 매핑합니다.</p>
+            <div className="flex justify-between items-center mb-4">
+              <p className="text-sm text-gray-600">Step 2와 Step 3에서 확정된 강의 타임라인에 퀴즈, 과제, 그리고 <strong className="text-cyan-600">스킬매치(Skill Match) 진단</strong>을 매핑합니다.</p>
+              <button className="px-4 py-2 bg-cyan-50 border border-cyan-200 text-cyan-700 text-sm font-bold rounded-lg flex items-center gap-1.5 shadow-sm hover:bg-cyan-100 transition-colors">
+                 <Target size={16}/> 사전/사후 스킬매치 진단 추가
+              </button>
+            </div>
             
             <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
               {[
+                { date: "10.27 (일)", time: "09:00-10:00", title: "부트캠프 오리엔테이션", type: "LIVE", skillMatch: "사전 진단 (Level 1-2 기준)" },
                 { date: "12.01 (월)", time: "13:00-18:00", title: "SQL 실무 적용 실습", type: "VOD", hasQuiz: true, hasAssign: false },
                 { date: "12.02 (화)", time: "13:00-18:00", title: "SQL 패턴 10가지", type: "VOD", hasQuiz: false, hasAssign: true },
-                { date: "12.03 (수)", time: "09:00-12:00", title: "데이터 분석가 준비 코딩테스트", type: "LIVE", hasQuiz: false, hasAssign: false },
               ].map((lec, idx) => (
-                <div key={idx} className="flex items-center border-b border-gray-100 p-4 hover:bg-gray-50 transition-colors">
+                <div key={idx} className={`flex items-center border-b border-gray-100 p-4 transition-colors ${lec.skillMatch ? 'bg-cyan-50/20' : 'hover:bg-gray-50'}`}>
                   <div className="w-32 flex flex-col gap-1 border-r border-gray-100 pr-4">
                     <span className="text-xs font-bold text-gray-500">{lec.date}</span>
                     <span className="text-[11px] text-gray-400">{lec.time}</span>
@@ -1090,15 +956,23 @@ function AdminProgramSetup() {
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    {lec.hasQuiz ? (
-                       <button className="px-3 py-1.5 bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold rounded flex items-center gap-1"><CheckCircle2 size={12}/> 3-4. SQL Quiz 4</button>
+                    {lec.skillMatch ? (
+                       <button className="px-3 py-1.5 bg-cyan-50 border border-cyan-300 text-cyan-800 text-xs font-bold rounded flex items-center gap-1.5 shadow-sm">
+                         <Target size={14} className="text-cyan-600"/> 스킬매치: {lec.skillMatch}
+                       </button>
                     ) : (
-                       <button className="px-3 py-1.5 bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 text-xs font-bold rounded flex items-center gap-1"><Plus size={12}/> 퀴즈 추가</button>
-                    )}
-                    {lec.hasAssign ? (
-                       <button className="px-3 py-1.5 bg-pink-50 border border-pink-200 text-pink-700 text-xs font-bold rounded flex items-center gap-1"><FileText size={12}/> Python 기초 과제</button>
-                    ) : (
-                       <button className="px-3 py-1.5 bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 text-xs font-bold rounded flex items-center gap-1"><Plus size={12}/> 과제 추가</button>
+                      <>
+                        {lec.hasQuiz ? (
+                           <button className="px-3 py-1.5 bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold rounded flex items-center gap-1"><CheckCircle2 size={12}/> 3-4. SQL Quiz 4</button>
+                        ) : (
+                           <button className="px-3 py-1.5 bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 text-xs font-bold rounded flex items-center gap-1"><Plus size={12}/> 퀴즈 추가</button>
+                        )}
+                        {lec.hasAssign ? (
+                           <button className="px-3 py-1.5 bg-pink-50 border border-pink-200 text-pink-700 text-xs font-bold rounded flex items-center gap-1"><FileText size={12}/> Python 기초 과제</button>
+                        ) : (
+                           <button className="px-3 py-1.5 bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 text-xs font-bold rounded flex items-center gap-1"><Plus size={12}/> 과제 추가</button>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
@@ -1153,13 +1027,24 @@ function AdminProgramSetup() {
 }
 
 // ============================================================================
-// OPERATION COMPONENTS
+// OPERATION COMPONENTS (UPDATED)
 // ============================================================================
 
 function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDetail }) {
   const [activeTab, setActiveTab] = useState('active');
   const selectedStudent = selectedStudentForDetail;
   const setSelectedStudent = setSelectedStudentForDetail;
+
+  // 출결 정정용 State
+  const [editingAttendanceId, setEditingAttendanceId] = useState(null);
+  const [tempAttStatus, setTempAttStatus] = useState('');
+  const [tempAttReason, setTempAttReason] = useState('');
+
+  const recentAttendanceMock = [
+    { id: 'a1', date: '10.23 (수)', status: '출석', badge: 'success', bg: '!bg-green-100', isEdited: false },
+    { id: 'a2', date: '10.24 (목)', status: '결석', badge: 'danger', bg: '!bg-red-100', isEdited: false },
+    { id: 'a3', date: '10.25 (금)', status: '지각', badge: 'warning', bg: '!bg-yellow-100', isEdited: true, reason: '시스템 연동 오류 정정' },
+  ];
 
   const getRiskBadge = (status) => {
     switch(status) {
@@ -1169,7 +1054,7 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
     }
   };
 
-  // 1-2. 수강생 상세 페이지 (상세 뷰)
+  // 상세 뷰 (V2 적용본)
   if (selectedStudent) {
     return (
       <div className="h-full flex flex-col max-w-[1600px] mx-auto animate-fadeIn overflow-auto custom-scrollbar pb-10">
@@ -1221,34 +1106,12 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
             <Users size={18} className="text-gray-500"/> 기본 정보
           </h3>
           <div className="grid grid-cols-4 gap-y-5 gap-x-6">
-            <div>
-              <span className="text-xs text-gray-500 font-bold block mb-1">생년월일</span>
-              <span className="text-sm font-medium text-gray-900">{selectedStudent.birthDate}</span>
-            </div>
-            <div>
-              <span className="text-xs text-gray-500 font-bold block mb-1">이메일 주소</span>
-              <span className="text-sm font-medium text-gray-900">{selectedStudent.email}</span>
-            </div>
-            <div>
-              <span className="text-xs text-gray-500 font-bold block mb-1">전화번호</span>
-              <span className="text-sm font-medium text-gray-900">{selectedStudent.phone}</span>
-            </div>
-            <div>
-              <span className="text-xs text-gray-500 font-bold block mb-1">주소</span>
-              <span className="text-sm font-medium text-gray-900 truncate block" title={selectedStudent.address}>{selectedStudent.address}</span>
-            </div>
-            <div>
-              <span className="text-xs text-gray-500 font-bold block mb-1">내일배움카드 번호</span>
-              <span className="text-sm font-medium text-gray-900">{selectedStudent.hrdCardNum}</span>
-            </div>
-            <div>
-              <span className="text-xs text-gray-500 font-bold block mb-1">결제 이력</span>
-              <span className="text-sm font-medium text-gray-900">{selectedStudent.paymentHistory}</span>
-            </div>
-            <div>
-              <span className="text-xs text-gray-500 font-bold block mb-1">전공</span>
-              <span className="text-sm font-medium text-gray-900">{selectedStudent.major}</span>
-            </div>
+            <div><span className="text-xs text-gray-500 font-bold block mb-1">생년월일</span><span className="text-sm font-medium text-gray-900">{selectedStudent.birthDate}</span></div>
+            <div><span className="text-xs text-gray-500 font-bold block mb-1">이메일 주소</span><span className="text-sm font-medium text-gray-900">{selectedStudent.email}</span></div>
+            <div><span className="text-xs text-gray-500 font-bold block mb-1">전화번호</span><span className="text-sm font-medium text-gray-900">{selectedStudent.phone}</span></div>
+            <div><span className="text-xs text-gray-500 font-bold block mb-1">내일배움카드 번호</span><span className="text-sm font-medium text-gray-900">{selectedStudent.hrdCardNum}</span></div>
+            <div><span className="text-xs text-gray-500 font-bold block mb-1">결제 이력</span><span className="text-sm font-medium text-gray-900">{selectedStudent.paymentHistory}</span></div>
+            <div><span className="text-xs text-gray-500 font-bold block mb-1">전공</span><span className="text-sm font-medium text-gray-900">{selectedStudent.major}</span></div>
             <div>
               <span className="text-xs text-gray-500 font-bold block mb-1.5">초기 셋업 현황</span>
               <div className="flex gap-1.5">
@@ -1258,7 +1121,6 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
             </div>
           </div>
           
-          {/* 이력서, 포트폴리오, 프로젝트 */}
           <div className="mt-6 pt-5 border-t border-gray-100">
             <h4 className="text-sm font-bold text-gray-800 mb-3">제출 서류 및 산출물</h4>
             <div className="flex gap-3">
@@ -1275,125 +1137,184 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-6 mb-6">
-          {/* Left Column: 학습 성과 (통합 뷰) & 역량평가 결과 */}
-          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col">
-            <h3 className="text-base font-bold text-gray-900 mb-5 flex items-center gap-2"><BookOpen size={18} className="text-indigo-500"/> 학습 성과 통합 뷰</h3>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center p-3.5 bg-gray-50 rounded-lg border border-gray-100">
-                <span className="text-sm font-bold text-gray-700">전체 진도율</span>
-                <div className="flex items-center gap-3 w-48">
-                  <div className="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden">
-                     <div className={`h-full rounded-full ${selectedStudent.progress < 50 ? 'bg-red-500' : 'bg-indigo-500'}`} style={{width: `${selectedStudent.progress}%`}}></div>
-                  </div>
-                  <span className="text-sm font-black text-gray-900 w-10 text-right">{selectedStudent.progress}%</span>
-                </div>
-              </div>
-              <div className="flex justify-between items-center p-3.5 bg-gray-50 rounded-lg border border-gray-100">
-                <span className="text-sm font-bold text-gray-700">과제 제출 현황</span>
-                <span className="text-sm font-bold text-gray-900">{selectedStudent.assignments} <span className="text-xs text-gray-500 font-medium ml-1">제출 완료</span></span>
-              </div>
-              <div className="flex justify-between items-center p-3.5 bg-gray-50 rounded-lg border border-gray-100">
-                <span className="text-sm font-bold text-gray-700">퀴즈 평균 점수</span>
-                <span className="text-sm font-bold text-gray-900">{selectedStudent.quizAvg}점</span>
-              </div>
-              <div className="flex justify-between items-center p-4 bg-indigo-50/50 rounded-lg border border-indigo-100">
-                <div>
-                  <span className="text-sm font-bold text-indigo-900 block mb-1">수료 기준 대비 현재 점수</span>
-                  <span className="text-xs text-indigo-600 font-bold bg-white px-2 py-0.5 rounded shadow-sm">목표: {selectedStudent.targetScore}점</span>
-                </div>
-                <div className="text-right">
-                  <span className={`text-2xl font-black ${selectedStudent.currentScore >= selectedStudent.targetScore ? 'text-green-600' : 'text-red-600'}`}>{selectedStudent.currentScore}점</span>
-                </div>
-              </div>
-              <div className="flex justify-between items-center p-3.5 bg-gray-50 rounded-lg border border-gray-100 mt-2">
-                <span className="text-sm font-bold text-gray-700">수료 가능 여부 예측 (AI)</span>
-                {selectedStudent.completionPrediction === '안정권' ? <Badge type="success">안정권</Badge> : <Badge type="danger">이탈/미수료 위험</Badge>}
+        <div className="grid grid-cols-5 gap-6 mb-6">
+          {/* LEFT: 학습 성과 및 스킬매치 (Span 3) */}
+          <div className="col-span-3 flex flex-col gap-6">
+             <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col">
+              <h3 className="text-base font-bold text-gray-900 mb-5 flex items-center gap-2"><BookOpen size={18} className="text-indigo-500"/> 학습 성과 통합 뷰</h3>
+              <div className="grid grid-cols-3 gap-4">
+                 <div className="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                    <span className="text-xs font-bold text-gray-500 block mb-1">전체 진도율</span>
+                    <span className="text-2xl font-black text-gray-900">{selectedStudent.progress}%</span>
+                 </div>
+                 <div className="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                    <span className="text-xs font-bold text-gray-500 block mb-1">과제 제출/총 퀴즈</span>
+                    <span className="text-2xl font-black text-gray-900">{selectedStudent.assignments}</span>
+                 </div>
+                 <div className="p-4 bg-indigo-50/50 rounded-lg border border-indigo-100">
+                    <span className="text-xs font-bold text-indigo-700 block mb-1">수료 기준 스코어</span>
+                    <span className="text-2xl font-black text-indigo-900">{selectedStudent.currentScore}<span className="text-sm font-bold text-indigo-400 ml-1">/ 100</span></span>
+                 </div>
               </div>
             </div>
 
-            {/* 역량평가 결과 (Radar Chart) */}
-            <div className="mt-6 pt-6 border-t border-gray-100 flex-1 flex flex-col">
-              <h4 className="text-sm font-bold text-gray-800 mb-2 flex items-center gap-2">
-                <Star size={16} className="text-yellow-500 fill-yellow-500"/> 역량평가 결과 (수료 시점 예측)
-              </h4>
-              <div className="flex-1 flex justify-center items-center py-4 relative">
-                <svg width="340" height="280" viewBox="0 0 340 280">
-                  {/* Grid Hexagons */}
-                  {[20, 40, 60, 80].map(r => (
+            {/* 스킬매치 (Skill Match) 프레임워크 적용 레이더 차트 */}
+            <div className="bg-white p-6 rounded-xl border border-cyan-200 shadow-sm flex-1 flex flex-col relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-50 rounded-bl-full -mr-10 -mt-10 z-0"></div>
+              <div className="flex justify-between items-start mb-4 relative z-10">
+                <div>
+                  <h4 className="text-base font-bold text-gray-900 flex items-center gap-2">
+                    <Target size={18} className="text-cyan-600"/> 스킬매치 진단 결과 (Skill Match)
+                  </h4>
+                  <p className="text-xs text-gray-500 mt-1">이해(Intelligence), 활용(Implementation), 기여(Impact) 3단계 역량 분석</p>
+                </div>
+                <div className="flex items-center gap-3">
+                   <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-gray-300"></span><span className="text-xs font-bold text-gray-500">사전 진단 (Lv 1~2)</span></div>
+                   <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-cyan-500"></span><span className="text-xs font-bold text-gray-700">현재 역량 (Lv 3~4)</span></div>
+                </div>
+              </div>
+
+              <div className="flex-1 flex items-center relative z-10">
+                 <div className="w-1/2 flex justify-center items-center py-4 relative">
+                  <svg width="260" height="260" viewBox="0 0 340 280">
+                    {[20, 40, 60, 80].map((r, index) => (
+                      <g key={r}>
+                        <polygon 
+                          points={`170,${140 - r} ${170 + r*0.866},${140 - r*0.5} ${170 + r*0.866},${140 + r*0.5} 170,${140 + r} ${170 - r*0.866},${140 + r*0.5} ${170 - r*0.866},${140 - r*0.5}`}
+                          fill="none" stroke="#E2E8F0" strokeWidth="1"
+                        />
+                        <text x="170" y={140 - r - 2} textAnchor="middle" fill="#94A3B8" fontSize="8">Lv {index+1}</text>
+                      </g>
+                    ))}
+                    <line x1="170" y1="140" x2="170" y2="60" stroke="#E2E8F0" strokeWidth="1"/>
+                    <line x1="170" y1="140" x2="239.2" y2="100" stroke="#E2E8F0" strokeWidth="1"/>
+                    <line x1="170" y1="140" x2="239.2" y2="180" stroke="#E2E8F0" strokeWidth="1"/>
+                    <line x1="170" y1="140" x2="170" y2="220" stroke="#E2E8F0" strokeWidth="1"/>
+                    <line x1="170" y1="140" x2="100.8" y2="180" stroke="#E2E8F0" strokeWidth="1"/>
+                    <line x1="170" y1="140" x2="100.8" y2="100" stroke="#E2E8F0" strokeWidth="1"/>
+                    
+                    {/* Pre-diagnostic (Gray) */}
                     <polygon 
-                      key={r}
-                      points={`
-                        170,${140 - r} 
-                        ${170 + r*0.866},${140 - r*0.5} 
-                        ${170 + r*0.866},${140 + r*0.5} 
-                        170,${140 + r} 
-                        ${170 - r*0.866},${140 + r*0.5} 
-                        ${170 - r*0.866},${140 - r*0.5}
-                      `}
-                      fill="none" stroke="#E2E8F0" strokeWidth="1"
+                      points={`170,${140 - 30} ${170 + 35*0.866},${140 - 35*0.5} ${170 + 20*0.866},${140 + 20*0.5} 170,${140 + 40} ${170 - 25*0.866},${140 + 25*0.5} ${170 - 30*0.866},${140 - 30*0.5}`}
+                      fill="rgba(203, 213, 225, 0.4)" stroke="#94A3B8" strokeWidth="1.5" strokeDasharray="3,3"
                     />
-                  ))}
-                  {/* Axes Lines */}
-                  <line x1="170" y1="140" x2="170" y2="60" stroke="#E2E8F0" strokeWidth="1"/>
-                  <line x1="170" y1="140" x2="239.2" y2="100" stroke="#E2E8F0" strokeWidth="1"/>
-                  <line x1="170" y1="140" x2="239.2" y2="180" stroke="#E2E8F0" strokeWidth="1"/>
-                  <line x1="170" y1="140" x2="170" y2="220" stroke="#E2E8F0" strokeWidth="1"/>
-                  <line x1="170" y1="140" x2="100.8" y2="180" stroke="#E2E8F0" strokeWidth="1"/>
-                  <line x1="170" y1="140" x2="100.8" y2="100" stroke="#E2E8F0" strokeWidth="1"/>
-                  
-                  {/* Data Polygon - Dynamic scaling logic simulation */}
-                  <polygon 
-                    points={`
-                      170,${140 - 72} 
-                      ${170 + 56*0.866},${140 - 56*0.5} 
-                      ${170 + 76*0.866},${140 + 76*0.5} 
-                      170,${140 + 64} 
-                      ${170 - 68*0.866},${140 + 68*0.5} 
-                      ${170 - 72*0.866},${140 - 72*0.5}
-                    `}
-                    fill="rgba(255, 45, 85, 0.35)" stroke="#FF2D55" strokeWidth="2.5" strokeLinejoin="round"
-                  />
-                  
-                  {/* Labels */}
-                  <text x="170" y="45" textAnchor="middle" fill="#374151" fontSize="12" fontWeight="bold">통계·수학</text>
-                  <text x="245" y="95" textAnchor="start" fill="#374151" fontSize="12" fontWeight="bold">머신러닝 모델링</text>
-                  <text x="245" y="195" textAnchor="start" fill="#374151" fontSize="12" fontWeight="bold">코딩·엔지니어링</text>
-                  <text x="170" y="245" textAnchor="middle" fill="#374151" fontSize="12" fontWeight="bold">비즈니스 문제정의</text>
-                  <text x="95" y="195" textAnchor="end" fill="#374151" fontSize="12" fontWeight="bold">커뮤니케이션</text>
-                  <text x="95" y="95" textAnchor="end" fill="#374151" fontSize="12" fontWeight="bold">태도·성장역량</text>
-                </svg>
+                    {/* Current/Post-diagnostic (Cyan) */}
+                    <polygon 
+                      points={`170,${140 - 70} ${170 + 60*0.866},${140 - 60*0.5} ${170 + 75*0.866},${140 + 75*0.5} 170,${140 + 55} ${170 - 50*0.866},${140 + 50*0.5} ${170 - 65*0.866},${140 - 65*0.5}`}
+                      fill="rgba(6, 182, 212, 0.25)" stroke="#06B6D4" strokeWidth="2.5" strokeLinejoin="round"
+                    />
+                    
+                    <text x="170" y="45" textAnchor="middle" fill="#374151" fontSize="11" fontWeight="bold">기술 이해 (Knowledge)</text>
+                    <text x="245" y="95" textAnchor="start" fill="#374151" fontSize="11" fontWeight="bold">도구 활용 (Implementation)</text>
+                    <text x="245" y="195" textAnchor="start" fill="#374151" fontSize="11" fontWeight="bold">업무 기여 (Impact)</text>
+                    <text x="170" y="240" textAnchor="middle" fill="#374151" fontSize="11" fontWeight="bold">비즈니스 문제해결</text>
+                    <text x="95" y="195" textAnchor="end" fill="#374151" fontSize="11" fontWeight="bold">커뮤니케이션</text>
+                    <text x="95" y="95" textAnchor="end" fill="#374151" fontSize="11" fontWeight="bold">학습 태도/경험</text>
+                  </svg>
+                 </div>
+                 
+                 {/* Skill Level Details */}
+                 <div className="w-1/2 pl-6 border-l border-gray-100 flex flex-col gap-3">
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                       <div className="flex justify-between items-center mb-1">
+                         <span className="text-xs font-bold text-gray-700">도구 활용 (SQL/Python)</span>
+                         <span className="text-xs font-black text-cyan-600">Level 4</span>
+                       </div>
+                       <p className="text-[10px] text-gray-500">독립적으로 스킬을 사용하며 상황을 주도할 수 있는 수준으로 크게 향상됨.</p>
+                    </div>
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                       <div className="flex justify-between items-center mb-1">
+                         <span className="text-xs font-bold text-gray-700">업무 기여 (프로젝트)</span>
+                         <span className="text-xs font-black text-cyan-600">Level 3</span>
+                       </div>
+                       <p className="text-[10px] text-gray-500">일반적인 상황에서 스킬을 활용해 팀 프로젝트 문제 해결에 기여함.</p>
+                    </div>
+                    <button className="mt-2 py-2 bg-white border border-cyan-200 text-cyan-700 rounded-lg text-xs font-bold shadow-sm hover:bg-cyan-50 transition-colors flex justify-center items-center gap-1.5">
+                       <Layers size={14}/> 전체 스킬매치 리포트 열람
+                    </button>
+                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right Column: 출결 현황 & 상담 히스토리 타임라인 */}
-          <div className="flex flex-col gap-6">
-            
-            {/* 출결 현황 (간소화) */}
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col">
-              <h3 className="text-base font-bold text-gray-900 mb-5 flex items-center gap-2"><CheckSquare size={18} className="text-green-500"/> 출결 현황 요약</h3>
-              <div className="grid grid-cols-2 gap-4 mb-5">
-                <div className="p-4 bg-gray-50 rounded-lg border border-gray-100 flex flex-col items-center justify-center shadow-inner">
-                  <span className="text-xs font-bold text-gray-500 mb-1">누적 출석률</span>
-                  <span className="text-3xl font-black text-gray-900">{selectedStudent.attendance}</span>
+          {/* RIGHT: 출결 현황 & 정정 기능 (Span 2) */}
+          <div className="col-span-2 flex flex-col gap-6">
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col flex-1">
+              <div className="flex justify-between items-center mb-5">
+                <h3 className="text-base font-bold text-gray-900 flex items-center gap-2"><CheckSquare size={18} className="text-green-500"/> 출결 현황 및 관리</h3>
+                <span className="text-xs text-gray-400 font-medium">HRD-Net 자동 연동</span>
+              </div>
+              <div className="flex gap-4 mb-5">
+                <div className="flex-1 p-3 bg-gray-50 rounded-lg border border-gray-100 text-center shadow-inner">
+                  <span className="text-xs font-bold text-gray-500 block">출석률</span>
+                  <span className="text-2xl font-black text-gray-900">{selectedStudent.attendance}</span>
                 </div>
-                <div className="p-4 bg-red-50/30 rounded-lg border border-red-100 flex flex-col items-center justify-center shadow-inner">
-                  <span className="text-xs font-bold text-red-500 mb-1">지각 / 결석 누적</span>
-                  <span className="text-3xl font-black text-red-600">{selectedStudent.lateCount}<span className="text-lg text-red-300 mx-1">/</span>{selectedStudent.absenceCount}</span>
+                <div className="flex-1 p-3 bg-red-50/30 rounded-lg border border-red-100 text-center shadow-inner">
+                  <span className="text-xs font-bold text-red-500 block">지각/결석</span>
+                  <span className="text-2xl font-black text-red-600">{selectedStudent.lateCount}/{selectedStudent.absenceCount}</span>
                 </div>
               </div>
+              
               <div className="flex-1 flex flex-col">
-                <div className="flex justify-between items-center mb-3">
-                   <h4 className="text-xs font-bold text-gray-600">최근 출결 이력 (2주)</h4>
-                   <button className="text-[10px] font-bold text-indigo-600 hover:underline">고용24 원본 데이터 보기</button>
-                </div>
-                <div className="flex-1 bg-white rounded-lg border border-gray-200 shadow-sm p-4 flex flex-col justify-center space-y-3">
-                   <div className="flex justify-between items-center text-sm font-medium border-b border-gray-50 pb-2"><span>10.23 (수)</span> <Badge type="success" className="!bg-green-100">출석</Badge></div>
-                   <div className="flex justify-between items-center text-sm font-medium border-b border-gray-50 pb-2"><span>10.24 (목)</span> <Badge type="danger" className="!bg-red-100">결석</Badge></div>
-                   <div className="flex justify-between items-center text-sm font-medium border-b border-gray-50 pb-2"><span>10.25 (금)</span> <Badge type="warning" className="!bg-yellow-100">지각</Badge></div>
-                   <div className="flex justify-between items-center text-sm font-medium border-b border-gray-50 pb-2"><span>10.26 (월)</span> <Badge type="success" className="!bg-green-100">출석</Badge></div>
-                   <div className="flex justify-between items-center text-sm font-medium"><span>10.27 (화)</span> <Badge type="danger" className="!bg-red-100">결석</Badge></div>
+                <h4 className="text-xs font-bold text-gray-600 mb-3 border-b border-gray-100 pb-2">최근 출결 이력 및 정정</h4>
+                <div className="bg-gray-50 rounded-lg border border-gray-200 p-3 space-y-2 overflow-y-auto max-h-48">
+                   {recentAttendanceMock.map((log) => (
+                     <div key={log.id} className="flex flex-col gap-1.5 bg-white p-2.5 rounded border border-gray-100 shadow-sm">
+                       <div className="flex justify-between items-center">
+                         <span className="text-sm font-bold text-gray-700">{log.date}</span>
+                         
+                         {/* Edit Mode Active */}
+                         {editingAttendanceId === log.id ? (
+                            <div className="flex items-center gap-2">
+                              <select 
+                                className="text-xs border border-indigo-300 rounded p-1 outline-none text-indigo-700 font-bold bg-indigo-50"
+                                value={tempAttStatus}
+                                onChange={(e) => setTempAttStatus(e.target.value)}
+                              >
+                                <option>출석</option><option>결석</option><option>지각</option><option>조퇴</option><option>공결</option>
+                              </select>
+                              <button 
+                                onClick={() => setEditingAttendanceId(null)}
+                                className="p-1 text-gray-400 hover:text-red-500 bg-gray-100 rounded"
+                              ><X size={14}/></button>
+                              <button 
+                                onClick={() => setEditingAttendanceId(null)}
+                                className="p-1 text-white bg-indigo-600 hover:bg-indigo-700 rounded"
+                              ><Check size={14}/></button>
+                            </div>
+                         ) : (
+                            // Read Mode
+                            <div className="flex items-center gap-2 group">
+                              <Badge type={log.badge} className={log.bg}>{log.status}</Badge>
+                              <button 
+                                onClick={() => {
+                                  setEditingAttendanceId(log.id);
+                                  setTempAttStatus(log.status);
+                                  setTempAttReason(log.reason || '');
+                                }} 
+                                className="text-gray-300 hover:text-indigo-600 transition-colors opacity-0 group-hover:opacity-100"
+                                title="출결 정정"
+                              ><Edit3 size={14}/></button>
+                            </div>
+                         )}
+                       </div>
+
+                       {/* Reason Input (Edit Mode) vs Display (Read Mode) */}
+                       {editingAttendanceId === log.id ? (
+                          <input 
+                            type="text" 
+                            placeholder="정정 사유를 입력하세요 (예: 시스템 오류, 병결 등)"
+                            className="w-full text-xs border border-gray-300 rounded p-1.5 outline-none focus:border-indigo-500 mt-1"
+                            value={tempAttReason}
+                            onChange={(e) => setTempAttReason(e.target.value)}
+                          />
+                       ) : log.isEdited ? (
+                          <div className="text-[10px] text-gray-500 bg-gray-50 p-1.5 rounded flex items-center gap-1 border border-gray-100">
+                            <Settings size={10} className="text-indigo-400"/> 수동 정정됨: {log.reason}
+                          </div>
+                       ) : null}
+                     </div>
+                   ))}
                 </div>
               </div>
             </div>
@@ -1408,9 +1329,7 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
               </div>
               
               <div className="relative pl-6 space-y-6">
-                {/* Timeline line */}
                 <div className="absolute left-[39px] top-2 bottom-2 w-px bg-gray-200"></div>
-                
                 <div className="relative flex items-start gap-5">
                   <div className="bg-indigo-50 text-indigo-500 w-10 h-10 rounded-full flex items-center justify-center border-4 border-white shadow-sm z-10 shrink-0">
                     <MessageCircle size={16}/>
@@ -1433,32 +1352,18 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
                        <span className="text-xs font-bold text-green-700 bg-green-50 border border-green-100 px-2 py-1 rounded">유선 상담 기록</span>
                        <time className="text-[11px] font-medium text-gray-400">2023.10.20 16:00</time>
                      </div>
-                     <p className="text-sm text-gray-700 font-medium leading-relaxed">최근 결석 사유 확인. 개인적인 건강 문제로 며칠 쉬었으나 다음주부터 정상 참여 약속함.</p>
-                  </div>
-                </div>
-                
-                <div className="relative flex items-start gap-5 opacity-60">
-                  <div className="bg-gray-100 text-gray-500 w-10 h-10 rounded-full flex items-center justify-center border-4 border-white shadow-sm z-10 shrink-0">
-                    <CheckSquare size={16}/>
-                  </div>
-                  <div className="flex-1 bg-white p-4.5 rounded-lg border border-gray-200 shadow-sm">
-                     <div className="flex justify-between items-center mb-2">
-                       <span className="text-xs font-bold text-gray-600 bg-gray-100 border border-gray-200 px-2 py-1 rounded">OT 참여 완료</span>
-                       <time className="text-[11px] font-medium text-gray-400">2023.10.15 10:00</time>
-                     </div>
-                     <p className="text-sm text-gray-700 font-medium leading-relaxed">프로그램 오리엔테이션 정상 참여 및 환경 세팅 완료.</p>
+                     <p className="text-sm text-gray-700 font-medium leading-relaxed">최근 결석 사유 확인. 건강 문제로 쉬었으나 다음주부터 정상 참여 약속함.</p>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
     );
   }
 
-  // 1-1. 운영 수강생 목록 (Active) 및 중도 탈락 탭
+  // 리스트 뷰 (Active / Dropout)
   return (
     <div className="h-full flex flex-col max-w-[1600px] mx-auto animate-fadeIn">
       <div className="flex justify-between items-end mb-6">
@@ -1473,9 +1378,6 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
           <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-semibold hover:bg-gray-50 flex items-center gap-2 shadow-sm text-gray-700">
             <UploadCloud size={16} /> Excel 업로드
           </button>
-          <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-semibold hover:bg-gray-50 flex items-center gap-2 shadow-sm text-gray-700">
-            <DownloadCloud size={16} /> Excel 다운로드
-          </button>
           <button className="px-4 py-2 bg-[#111827] text-white rounded-lg text-sm font-semibold hover:bg-gray-800 flex items-center gap-2 shadow-sm">
             <UserPlus size={16} /> 계정 생성
           </button>
@@ -1483,7 +1385,6 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 flex-1 flex flex-col overflow-hidden">
-        {/* Main Tabs */}
         <div className="border-b border-gray-100 px-6 flex gap-8 bg-gray-50/50">
           {[
             { id: 'active', label: '운영 수강생 (Active)', count: 125 },
@@ -1504,7 +1405,6 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
 
         {activeTab === 'active' && (
           <>
-            {/* Filters */}
             <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-white flex-wrap gap-4">
               <div className="flex items-center gap-3">
                 <div className="relative">
@@ -1516,11 +1416,6 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
                   <option>위험도: 위험</option>
                   <option>위험도: 주의</option>
                   <option>위험도: 안전</option>
-                </select>
-                <select className="bg-white border border-gray-200 text-gray-700 text-sm font-bold rounded-lg px-3 py-2 cursor-pointer shadow-sm outline-none hover:border-indigo-300 transition-colors">
-                  <option>상태: 전체</option>
-                  <option>상태: 재학중</option>
-                  <option>상태: 이탈위험</option>
                 </select>
                 <select className="bg-white border border-gray-200 text-gray-700 text-sm font-bold rounded-lg px-3 py-2 cursor-pointer shadow-sm outline-none hover:border-indigo-300 transition-colors">
                   <option>정렬: 위험도순</option>
@@ -1535,7 +1430,6 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
               </div>
             </div>
 
-            {/* Table Area (Active) */}
             <div className="flex-1 overflow-auto custom-scrollbar">
               <table className="w-full text-left border-collapse min-w-[1000px]">
                 <thead className="bg-gray-50/80 text-gray-500 text-xs uppercase font-bold sticky top-0 z-10 border-b border-gray-200 backdrop-blur-sm">
@@ -1565,9 +1459,7 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
                           </div>
                         </div>
                       </td>
-                      <td className="p-4">
-                         <span className="text-xs font-bold text-gray-700 bg-gray-50 px-2 py-1 rounded border border-gray-200">{student.program}</span>
-                      </td>
+                      <td className="p-4"><span className="text-xs font-bold text-gray-700 bg-gray-50 px-2 py-1 rounded border border-gray-200">{student.program}</span></td>
                       <td className="p-4">
                         <div className="flex items-center gap-2">
                           <div className="flex-1 bg-gray-100 rounded-full h-2 overflow-hidden border border-gray-200/50">
@@ -1576,17 +1468,10 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
                           <span className={`text-xs font-black w-8 text-right ${student.progress < 50 ? 'text-[#FF2D55]' : 'text-gray-700'}`}>{student.progress}%</span>
                         </div>
                       </td>
+                      <td className="p-4"><span className="text-xs font-black text-gray-800">{student.attendance}</span></td>
+                      <td className="p-4">{getRiskBadge(student.status)}</td>
                       <td className="p-4">
-                        <span className="text-xs font-black text-gray-800">{student.attendance}</span>
-                      </td>
-                      <td className="p-4">
-                        {getRiskBadge(student.status)}
-                      </td>
-                      <td className="p-4">
-                        {student.completionPrediction === '안정권' ? 
-                          <Badge type="success">안정권</Badge> : 
-                          <Badge type="danger">이탈위험</Badge>
-                        }
+                        {student.completionPrediction === '안정권' ? <Badge type="success">안정권</Badge> : <Badge type="danger">이탈위험</Badge>}
                       </td>
                       <td className="p-4 text-center">
                          <button onClick={() => setSelectedStudent(student)} className="px-3 py-1.5 bg-white border border-gray-200 text-gray-700 rounded-lg text-[11px] font-bold hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300 shadow-sm transition-all">
@@ -1598,18 +1483,9 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
                 </tbody>
               </table>
             </div>
-            
-            {/* Bulk Action Footer */}
-            <div className="p-4 border-t border-gray-200 bg-gray-50 flex justify-between items-center">
-               <span className="text-sm font-semibold text-gray-600">0명 선택됨</span>
-               <button className="px-5 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg text-sm font-bold hover:bg-gray-50 shadow-sm flex items-center gap-2 transition-all">
-                 선택된 인원에게 넛지 일괄 발송
-               </button>
-            </div>
           </>
         )}
 
-        {/* 1-3. 중도 탈락 관리 (Dropout Tab) */}
         {activeTab === 'dropout' && (
           <div className="flex-1 overflow-auto custom-scrollbar bg-gray-50/30">
             <table className="w-full text-left border-collapse min-w-[900px]">
@@ -1636,15 +1512,9 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
                         </div>
                       </div>
                     </td>
-                    <td className="p-4">
-                       <span className="text-xs font-bold text-gray-600">{dropout.program}</span>
-                    </td>
-                    <td className="p-4">
-                       <span className="text-sm font-bold text-red-600">{dropout.dropDate}</span>
-                    </td>
-                    <td className="p-4">
-                       <Badge type="danger" className="!bg-red-50">{dropout.reason}</Badge>
-                    </td>
+                    <td className="p-4"><span className="text-xs font-bold text-gray-600">{dropout.program}</span></td>
+                    <td className="p-4"><span className="text-sm font-bold text-red-600">{dropout.dropDate}</span></td>
+                    <td className="p-4"><Badge type="danger" className="!bg-red-50">{dropout.reason}</Badge></td>
                     <td className="p-4 text-center">
                        <button className="px-4 py-1.5 bg-white border border-gray-200 text-gray-700 rounded-lg text-xs font-bold hover:bg-red-50 hover:text-red-700 hover:border-red-300 shadow-sm transition-all flex items-center gap-1.5 mx-auto">
                          <FileText size={14}/> 조회 ({dropout.counselingCount}건)
@@ -1662,21 +1532,22 @@ function OperatorStudentMgmt({ selectedStudentForDetail, setSelectedStudentForDe
 }
 
 function OperatorAttendanceMgmt({ onStudentClick }) {
-  const [activeSubTab, setActiveSubTab] = useState('종합 현황');
-  
+  const [activeSubTab, setActiveSubTab] = useState('채점 & 점수 입력'); 
+  const [expandedGradingId, setExpandedGradingId] = useState(null);
+  const [gradingMode, setGradingMode] = useState('rubric'); 
+
   return (
     <div className="space-y-6 max-w-[1600px] mx-auto animate-fadeIn">
       <div className="flex justify-between items-end">
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Badge type="default">OPERATION</Badge>
-            <h1 className="text-2xl font-bold text-gray-900">출결 & 학습 관리</h1>
+            <h1 className="text-2xl font-bold text-gray-900">출결 & 학습 관리 (채점 고도화)</h1>
           </div>
-          <p className="text-gray-500 text-sm">고용24 출결 데이터와 LMS 활동 기록을 통합하여 관리합니다.</p>
+          <p className="text-gray-500 text-sm">고용24 출결 데이터와 과제 피드백 업로드 및 루브릭 기반 채점 시스템입니다.</p>
         </div>
       </div>
 
-      {/* 2-1. KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <KpiCard title="평균 수강률" value="88.2%" subtext="목표 90%" icon={MonitorPlay} trend="down" />
         <KpiCard title="평균 출석률" value="95.0%" subtext="고용24 연동" icon={CheckSquare} trend="up" />
@@ -1693,7 +1564,7 @@ function OperatorAttendanceMgmt({ onStudentClick }) {
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col overflow-hidden">
         <div className="border-b border-gray-100 px-6 flex gap-8 bg-gray-50/50">
-          {['종합 현황', '강의 수강', '채점 & 점수 입력', '과제 관리', '퀴즈/피어리뷰'].map((tab) => (
+          {['종합 현황', '과제 관리', '채점 & 점수 입력'].map((tab) => (
             <button 
               key={tab} 
               onClick={() => setActiveSubTab(tab)}
@@ -1706,7 +1577,6 @@ function OperatorAttendanceMgmt({ onStudentClick }) {
           ))}
         </div>
 
-        {/* 2-2. 종합 현황 탭 */}
         {activeSubTab === '종합 현황' && (
           <div className="flex flex-col h-full">
             <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-white">
@@ -1777,7 +1647,6 @@ function OperatorAttendanceMgmt({ onStudentClick }) {
           </div>
         )}
 
-        {/* 2-3. 과제 관리 탭 */}
         {activeSubTab === '과제 관리' && (
           <div className="flex flex-col h-full p-6 bg-gray-50/30">
             <div className="overflow-hidden bg-white border border-gray-200 rounded-xl shadow-sm">
@@ -1831,76 +1700,145 @@ function OperatorAttendanceMgmt({ onStudentClick }) {
           </div>
         )}
 
-        {/* 2-4. 채점 & 점수 입력 탭 */}
         {activeSubTab === '채점 & 점수 입력' && (
           <div className="flex flex-col h-full p-6 bg-gray-50/30">
             <div className="flex justify-between items-center mb-4">
               <select className="bg-white border border-gray-300 text-gray-700 text-sm font-bold rounded-lg px-4 py-2 cursor-pointer shadow-sm outline-none hover:border-indigo-300 transition-colors">
-                <option>과제 1: Python 전처리 실습</option>
-                <option>과제 2: SQL 데이터 추출</option>
+                <option>과제 1: Python 데이터 전처리 프로젝트</option>
+                <option>과제 2: SQL 비즈니스 인사이트 도출</option>
               </select>
-              <div className="flex gap-2">
-                <button className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg text-xs font-bold flex items-center gap-1.5 hover:bg-gray-50 shadow-sm transition-colors">
-                  <UploadCloud size={14}/> Excel 업로드
-                </button>
-                <button className="px-4 py-2 bg-indigo-600 border border-transparent text-white rounded-lg text-xs font-bold flex items-center gap-1.5 hover:bg-indigo-700 shadow-sm transition-colors">
-                  일괄 저장
-                </button>
-              </div>
             </div>
 
             <div className="overflow-hidden bg-white border border-gray-200 rounded-xl shadow-sm">
               <table className="w-full text-left border-collapse">
                 <thead className="bg-gray-50 border-b border-gray-200 text-xs font-bold text-gray-500 uppercase">
                   <tr>
-                    <th className="p-4">수강생명</th>
-                    <th className="p-4">제출 일시</th>
-                    <th className="p-4">첨부 파일</th>
-                    <th className="p-4 text-center">현재 점수</th>
-                    <th className="p-4 text-center">액션</th>
+                    <th className="p-4 w-1/4">수강생명</th>
+                    <th className="p-4 w-1/4">제출 일시/파일</th>
+                    <th className="p-4 text-center w-1/4">총점</th>
+                    <th className="p-4 text-center w-1/4">채점하기</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 text-sm">
                   {mockStudents.map(student => (
-                    <tr key={student.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="p-4">
-                        <div className="font-bold text-gray-900">{student.name}</div>
-                        <div className="text-[10px] text-gray-500">{student.email}</div>
-                      </td>
-                      <td className="p-4 text-gray-600 font-medium">
-                        {student.assignments !== "3/8" ? "10.24 14:20" : "-"}
-                      </td>
-                      <td className="p-4">
-                        {student.assignments !== "3/8" ? (
-                          <button className="text-indigo-600 hover:underline flex items-center gap-1 text-xs font-semibold">
-                            <FileText size={12}/> python_hw_1.ipynb
-                          </button>
-                        ) : (
-                          <span className="text-xs text-gray-400">미제출</span>
-                        )}
-                      </td>
-                      <td className="p-4 text-center">
-                        <div className="flex items-center justify-center gap-2">
-                          <input 
-                            type="number" 
-                            defaultValue={student.currentScore} 
-                            className="w-16 p-1.5 border border-gray-300 rounded text-center font-bold text-gray-900 focus:ring-2 focus:ring-indigo-100 focus:border-indigo-500 outline-none"
+                    <React.Fragment key={student.id}>
+                      <tr className="hover:bg-gray-50 transition-colors">
+                        <td className="p-4">
+                          <div className="font-bold text-gray-900">{student.name}</div>
+                          <div className="text-[10px] text-gray-500">{student.email}</div>
+                        </td>
+                        <td className="p-4">
+                          {student.assignments !== "3/8" ? (
+                            <div>
+                              <div className="text-xs text-gray-500 mb-1">10.24 14:20 제출</div>
+                              <button className="text-indigo-600 hover:underline flex items-center gap-1 text-xs font-semibold">
+                                <FileText size={12}/> project_v1.zip
+                              </button>
+                            </div>
+                          ) : (
+                            <span className="text-xs font-bold text-red-400 bg-red-50 px-2 py-1 rounded">미제출</span>
+                          )}
+                        </td>
+                        <td className="p-4 text-center">
+                          <span className="text-lg font-black text-gray-900">{student.assignments !== "3/8" ? student.currentScore : '-'}</span>
+                          <span className="text-xs text-gray-400 ml-1">/ 100</span>
+                        </td>
+                        <td className="p-4 text-center">
+                          <button 
+                            onClick={() => setExpandedGradingId(expandedGradingId === student.id ? null : student.id)}
+                            className={`px-4 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 mx-auto w-28 ${
+                              expandedGradingId === student.id ? 'bg-indigo-600 text-white shadow-sm' : 
+                              student.assignments !== "3/8" ? 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-indigo-400' : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            }`}
                             disabled={student.assignments === "3/8"}
-                          />
-                          <span className="text-gray-400 font-medium text-xs">/ 100</span>
-                        </div>
-                      </td>
-                      <td className="p-4 text-center">
-                        <button 
-                          className={`px-3 py-1.5 rounded text-xs font-bold transition-colors ${
-                            student.assignments !== "3/8" ? "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 shadow-sm" : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                          }`}
-                          disabled={student.assignments === "3/8"}
-                        >
-                          저장
-                        </button>
-                      </td>
-                    </tr>
+                          >
+                            <Edit3 size={14}/> {expandedGradingId === student.id ? '닫기' : '피드백 입력'}
+                          </button>
+                        </td>
+                      </tr>
+                      
+                      {expandedGradingId === student.id && (
+                        <tr className="bg-indigo-50/20">
+                          <td colSpan="4" className="p-0 border-b-2 border-indigo-200">
+                             <div className="p-6">
+                               <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-1">
+                                 <div className="flex p-1 bg-gray-50 rounded-lg mb-4">
+                                   <button 
+                                     onClick={() => setGradingMode('rubric')}
+                                     className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${gradingMode === 'rubric' ? 'bg-white text-indigo-700 shadow border border-gray-100' : 'text-gray-500 hover:text-gray-700'}`}
+                                   >
+                                     <Award size={16} className="inline mr-1.5 mb-0.5"/> 셋업된 기준(루브릭) 직접 채점
+                                   </button>
+                                   <button 
+                                     onClick={() => setGradingMode('upload')}
+                                     className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${gradingMode === 'upload' ? 'bg-white text-indigo-700 shadow border border-gray-100' : 'text-gray-500 hover:text-gray-700'}`}
+                                   >
+                                     <FileUp size={16} className="inline mr-1.5 mb-0.5"/> 전임강사 피드백 업로드
+                                   </button>
+                                 </div>
+
+                                 <div className="p-4">
+                                   {gradingMode === 'rubric' && (
+                                     <div className="space-y-4">
+                                       <div className="flex justify-between items-center pb-2 border-b border-gray-100">
+                                         <h4 className="font-bold text-gray-800 text-sm">평가 항목 (Python 데이터 전처리)</h4>
+                                         <span className="text-xs text-gray-500">프로그램 셋업 시 등록된 기준입니다.</span>
+                                       </div>
+                                       {['데이터 결측치 처리 로직 (30점)', '코드 가독성 및 주석 (30점)', '결과 도출 및 시각화 (40점)'].map((item, idx) => (
+                                         <div key={idx} className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                           <span className="text-sm font-bold text-gray-700">{item}</span>
+                                           <div className="flex gap-2">
+                                             <label className="flex items-center gap-1.5 text-sm bg-white border border-gray-200 px-3 py-1.5 rounded cursor-pointer hover:border-indigo-400">
+                                               <input type="radio" name={`rubric_${student.id}_${idx}`} className="accent-indigo-600"/> 상
+                                             </label>
+                                             <label className="flex items-center gap-1.5 text-sm bg-white border border-gray-200 px-3 py-1.5 rounded cursor-pointer hover:border-indigo-400">
+                                               <input type="radio" name={`rubric_${student.id}_${idx}`} className="accent-indigo-600" defaultChecked/> 중
+                                             </label>
+                                             <label className="flex items-center gap-1.5 text-sm bg-white border border-gray-200 px-3 py-1.5 rounded cursor-pointer hover:border-indigo-400">
+                                               <input type="radio" name={`rubric_${student.id}_${idx}`} className="accent-indigo-600"/> 하
+                                             </label>
+                                           </div>
+                                         </div>
+                                       ))}
+                                       <div className="mt-4 flex flex-col gap-2">
+                                          <span className="text-xs font-bold text-gray-600">추가 코멘트 (선택)</span>
+                                          <textarea className="w-full border border-gray-200 rounded-lg p-3 text-sm outline-none focus:border-indigo-500" rows="2" placeholder="수강생에게 전달할 코멘트를 입력하세요."></textarea>
+                                       </div>
+                                     </div>
+                                   )}
+
+                                   {gradingMode === 'upload' && (
+                                     <div className="space-y-4">
+                                       <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center bg-gray-50 hover:bg-indigo-50/50 hover:border-indigo-300 transition-colors cursor-pointer">
+                                          <UploadCloud size={32} className="text-indigo-400 mb-2" />
+                                          <span className="text-sm font-bold text-gray-700">강사 피드백 파일 업로드 (PDF, DOCX)</span>
+                                          <span className="text-xs text-gray-400 mt-1">또는 여기로 파일을 드래그하세요</span>
+                                       </div>
+                                       <div className="flex gap-4 items-center bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                          <span className="text-sm font-bold text-gray-700">외부 피드백 링크 (노션, 구글닥스 등)</span>
+                                          <input type="text" className="flex-1 border border-gray-200 rounded p-2 text-sm outline-none focus:border-indigo-500" placeholder="https://" />
+                                       </div>
+                                       <div className="flex gap-4 items-center justify-end bg-indigo-50/50 p-4 rounded-lg border border-indigo-100">
+                                          <span className="text-sm font-bold text-indigo-900">최종 부여 점수</span>
+                                          <input type="number" defaultValue={student.currentScore} className="w-24 border border-gray-300 rounded p-2 text-center font-black text-lg text-indigo-700 outline-none focus:border-indigo-500 focus:ring-2 ring-indigo-200" />
+                                          <span className="text-sm font-bold text-gray-500">/ 100</span>
+                                       </div>
+                                     </div>
+                                   )}
+                                   
+                                   <div className="mt-6 flex justify-end gap-2">
+                                     <button onClick={() => setExpandedGradingId(null)} className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-bold text-gray-600 hover:bg-gray-50">취소</button>
+                                     <button className="px-6 py-2 bg-[#111827] text-white rounded-lg text-sm font-bold shadow-md hover:bg-gray-800 flex items-center gap-2">
+                                       <Check size={16}/> 채점 및 피드백 저장 (수강생 알림)
+                                     </button>
+                                   </div>
+                                 </div>
+                               </div>
+                             </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
                   ))}
                 </tbody>
               </table>
@@ -2003,14 +1941,9 @@ function OperatorQnAMgmt() {
   );
 }
 
-// ============================================================================
-// NEW DASHBOARD COMPONENTS
-// ============================================================================
-
 function AdminDashboard() {
   return (
     <div className="space-y-6 max-w-[1600px] mx-auto animate-fadeIn">
-      {/* Header & Filters */}
       <div className="flex justify-between items-end mb-2">
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -2031,23 +1964,17 @@ function AdminDashboard() {
         </div>
       </div>
 
-      {/* KPI Grid */}
       <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4">
-        {/* Added Revenue & Satisfaction */}
         <KpiCard title="전체 매출" value="12.5억" subtext="올해 누적 기준" icon={DollarSign} trend="up" />
         <KpiCard title="프로그램 만족도" value="4.8" subtext="5.0 만점 기준" icon={Star} trend="up" />
         <KpiCard title="전체 수강생" value="128명" subtext="현재 운영 기수 합계" icon={Users} trend="up" />
         <KpiCard title="충원율" value="98.5%" subtext="정원 130명 기준" icon={UserCheck} trend="up" />
       </div>
 
-      {/* Infographic Dashboard Area */}
       <div className="grid grid-cols-3 gap-6 mt-6">
-        
-        {/* Chart 1: Student Health (Donut) */}
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col">
           <h3 className="text-base font-bold text-gray-900 mb-6 flex items-center gap-2"><Activity size={18} className="text-indigo-500"/> 수강생 건전성 지표</h3>
           <div className="flex-1 flex items-center justify-center relative">
-            {/* CSS Donut Chart */}
             <div className="relative w-40 h-40 rounded-full shadow-sm" style={{ background: 'conic-gradient(#10B981 0% 70%, #F59E0B 70% 85%, #EF4444 85% 100%)' }}>
               <div className="absolute inset-4 bg-white rounded-full flex items-center justify-center flex-col shadow-inner">
                 <span className="text-3xl font-black text-gray-800 tracking-tight">128</span>
@@ -2062,14 +1989,12 @@ function AdminDashboard() {
           </div>
         </div>
 
-        {/* Chart 2: Weekly Trend (Bar) */}
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col col-span-2">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-base font-bold text-gray-900 flex items-center gap-2"><TrendingUp size={18} className="text-indigo-500"/> 최근 5주 평균 출석률 추이</h3>
             <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded border border-indigo-100">목표 90%</span>
           </div>
           <div className="flex-1 flex items-end justify-between gap-6 px-4 pt-4 relative">
-            {/* Target Line */}
             <div className="absolute w-[calc(100%-2rem)] h-px border-t border-dashed border-indigo-400 bottom-[calc(90%-16px)] z-0 left-4"></div>
             {[
               { week: '1주차', val: 98, color: 'bg-indigo-300' },
@@ -2079,11 +2004,9 @@ function AdminDashboard() {
               { week: '5주차(현재)', val: 96, color: 'bg-indigo-600' },
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center gap-3 flex-1 group relative z-10">
-                {/* Tooltip */}
                 <div className="absolute -top-8 bg-gray-800 text-white text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
                   {item.val}%
                 </div>
-                {/* Bar */}
                 <div className="w-full bg-gray-50 border border-gray-100 rounded-t-lg relative h-32 flex items-end overflow-hidden group-hover:bg-gray-100 transition-colors shadow-inner">
                   <div className={`w-full rounded-t-lg transition-all duration-500 shadow-sm ${item.color}`} style={{ height: `${item.val}%` }}></div>
                 </div>
@@ -2093,7 +2016,6 @@ function AdminDashboard() {
           </div>
         </div>
 
-        {/* Chart 3: Cohort Detailed Comparison */}
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col col-span-3">
           <h3 className="text-base font-bold text-gray-900 mb-6 flex items-center gap-2"><BarChart3 size={18} className="text-indigo-500"/> 코호트별 다중 지표 성과 비교</h3>
           <div className="grid grid-cols-2 gap-x-12 gap-y-6">
@@ -2109,7 +2031,6 @@ function AdminDashboard() {
                   <span className="text-[10px] font-medium text-gray-500 bg-gray-200 px-1.5 py-0.5 rounded">수강생 {Math.floor(Math.random() * 20 + 30)}명</span>
                 </div>
                 <div className="flex-1 space-y-3">
-                  {/* Metric 1: Completion */}
                   <div className="flex items-center gap-3">
                     <span className="text-[11px] font-bold text-gray-500 w-12">수료율</span>
                     <div className="flex-1 bg-gray-200 rounded-full h-2 flex overflow-hidden">
@@ -2117,7 +2038,6 @@ function AdminDashboard() {
                     </div>
                     <span className="text-[11px] font-black text-indigo-700 w-8 text-right">{prog.comp}%</span>
                   </div>
-                  {/* Metric 2: HW Submission */}
                   <div className="flex items-center gap-3">
                     <span className="text-[11px] font-bold text-gray-500 w-12">과제제출</span>
                     <div className="flex-1 bg-gray-200 rounded-full h-2 flex overflow-hidden">
@@ -2138,7 +2058,6 @@ function AdminDashboard() {
 function OperatorDashboard() {
   return (
     <div className="space-y-6 max-w-[1600px] mx-auto animate-fadeIn">
-      {/* Header */}
       <div className="flex justify-between items-end mb-2">
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -2152,7 +2071,6 @@ function OperatorDashboard() {
         </div>
       </div>
 
-      {/* Action Cards (To-Do 중심) */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         <div className="bg-[#FFF1F2] border border-[#FECDD3] p-5 rounded-xl flex flex-col justify-between shadow-sm cursor-pointer hover:border-red-400 transition-colors">
            <div className="text-red-800 font-bold text-sm mb-3 flex items-center gap-1.5"><AlertTriangle size={16} /> 위험군 학생 수</div>
@@ -2195,7 +2113,6 @@ function OperatorDashboard() {
         </div>
       </div>
 
-      {/* AI Intervention Top 5 */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mt-6">
         <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
           <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
